@@ -10,13 +10,11 @@ public class FileReaderIterator implements Iterator<String> {
 
 	private String fileName;
 	private String line = null;
-	private FileEventListener listener;
 	private FileReader fileReader = null;
 	private BufferedReader bufferedReader = null;
 
-	public FileReaderIterator(String fileName, FileEventListener listener) {
+	public FileReaderIterator(String fileName) {
 		this.fileName = fileName;
-		this.listener = listener;
 		read();
 	}
 
@@ -43,8 +41,6 @@ public class FileReaderIterator implements Iterator<String> {
 
 	@Override
 	public String next() {
-		if (line != null)
-			listener.onRead(line);
 		return line;
 	}
 }

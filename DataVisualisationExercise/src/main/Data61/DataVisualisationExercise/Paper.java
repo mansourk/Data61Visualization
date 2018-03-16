@@ -11,6 +11,10 @@ public class Paper {
 	private final int year;
 	private CopyOnWriteArrayList<Author> authors = new CopyOnWriteArrayList<Author>();
 
+	public Paper(String[] fields) {
+		this(Integer.parseInt(fields[0]), fields[1], fields[2], fields[3], Integer.parseInt(fields[4]));
+	}
+
 	public Paper(int id, String dataset, String title, String venue, int year) {
 		super();
 		this.id = id;
@@ -21,7 +25,7 @@ public class Paper {
 	}
 
 	public void addAuthor(Author author) {
-		
+
 		if (!authors.contains(author))
 			authors.add(author);
 	}
