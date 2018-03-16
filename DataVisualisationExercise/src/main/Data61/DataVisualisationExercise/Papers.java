@@ -43,6 +43,8 @@ public class Papers {
 		@Override
 		public void run() {
 			String[] fields = line.split(",");
+			if (fields[0].equalsIgnoreCase("Id"))
+				return;
 			papers.put(Integer.parseInt(fields[0]), new Paper(fields));
 		}
 
