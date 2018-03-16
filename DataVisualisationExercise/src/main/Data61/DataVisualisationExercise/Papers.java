@@ -28,11 +28,6 @@ public class Papers {
 		}
 	}
 
-	public void addPaper(Paper paper) {
-		if (!papers.containsKey(paper.getId()))
-			papers.put(paper.getId(), paper);
-	}
-
 	public ConcurrentHashMap<Integer, Paper> getPapers() {
 		return papers;
 	}

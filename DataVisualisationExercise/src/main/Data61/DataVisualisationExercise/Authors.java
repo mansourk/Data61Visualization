@@ -30,11 +30,6 @@ public class Authors {
 		}
 	}
 
-	public void addAuthor(Author author) {
-		if (!authors.containsKey(author.getName()))
-			authors.put(author.getName(), author);
-	}
-
 	public ConcurrentHashMap<String, Author> getAuthors() {
 		return authors;
 	}
@@ -48,13 +43,17 @@ public class Authors {
 		}
 		@Override
 		public void run() {
+			
 			String[] fields = line.split(",");
-			Author author = new Author(fields[2]);
+			Author author = authors.get(fields[2]); 
+			if (author == null)
+				author = new Author(fields[2]);
 			author.addPaper(context.papers.getPapers().get(fields[0]));
 			author.addPaper(context.papers.getPapers().get(fields[1]));
 			authors.put(fields[2], author);
 			context.papers.getPapers().get(fields[0]).addAuthor(author);
 			context.papers.getPapers().get(fields[1]).addAuthor(author);
+			
 		}
 		
 	}
