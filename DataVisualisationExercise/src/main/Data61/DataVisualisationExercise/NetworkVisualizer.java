@@ -49,7 +49,7 @@ public class NetworkVisualizer {
 
 	public void drawNetwork() {
 		drawer.clear(1, 1, 1);
-		drawer.setupForDrawing();
+		drawer.setup();
 
 		synchronized (network) {
 			drawer.setCoordinateSystemToWorldSpaceUnits();

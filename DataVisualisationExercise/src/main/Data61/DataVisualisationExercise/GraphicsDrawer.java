@@ -1,7 +1,6 @@
 package Data61.DataVisualisationExercise;
 
 import java.lang.Math;
-import java.util.ArrayList;
 
 import com.jogamp.opengl.GL;
 import com.jogamp.opengl.GL2;
@@ -61,7 +60,7 @@ class GraphicsDrawer {
 		GL2.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
 	}
 
-	public void setupForDrawing() {
+	public void setup() {
 		GL2.glMatrixMode(GLMatrixFunc.GL_MODELVIEW);
 		GL2.glLoadIdentity();
 		GL2.glDisable(GL.GL_DEPTH_TEST);
@@ -74,16 +73,8 @@ class GraphicsDrawer {
 		GL2.glColor3f(r, g, b);
 	}
 
-	public void setColor(float r, float g, float b, float alpha) {
-		GL2.glColor4f(r, g, b, alpha);
-	}
-
 	public void setColor(Color c) {
-		setColor(c.getRed() / 255.0f, c.getGreen() / 255.0f, c.getBlue() / 255.0f, c.getAlpha() / 255.0f);
-	}
-
-	public void setColor(Color c, float alpha) {
-		setColor(c.getRed() / 255.0f, c.getGreen() / 255.0f, c.getBlue() / 255.0f, alpha);
+		setColor(c.getRed() / 255.0f, c.getGreen() / 255.0f, c.getBlue() / 255.0f);
 	}
 
 	public void setLineWidth(float width) {
@@ -97,21 +88,6 @@ class GraphicsDrawer {
 		GL2.glEnd();
 		GL2.glBegin(GL.GL_POINTS);
 		GL2.glVertex2f(x2, y2);
-		GL2.glEnd();
-	}
-
-	public void drawPolyline(ArrayList<GLPoint> points, boolean isClosed, boolean isFilled) {
-		if (points.size() <= 1)
-			return;
-		if (isFilled)
-			GL2.glBegin(com.jogamp.opengl.GL2.GL_POLYGON);
-		else
-			GL2.glBegin(isClosed ? GL.GL_LINE_LOOP : GL.GL_LINE_STRIP);
-
-		for (int i = 0; i < points.size(); ++i) {
-			GLPoint p = points.get(i);
-			GL2.glVertex2fv(p.get(), 0);
-		}
 		GL2.glEnd();
 	}
 
