@@ -115,10 +115,6 @@ class GraphicsDrawer {
 		GL2.glEnd();
 	}
 
-	public void drawPolyline(ArrayList<GLPoint> points) {
-		drawPolyline(points, false, false);
-	}
-
 	public void drawCircle(float x, float y, float radius, boolean isFilled) {
 		x += radius;
 		y += radius;
