@@ -4,16 +4,18 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class Authors {
 
 	private ApplicationContext context;
+	ConcurrentHashMap<String, Author> authors = new ConcurrentHashMap<String, Author>();
 
+	private AtomicInteger id = new AtomicInteger(-1);
+	
 	public Authors(ApplicationContext context) {
 		this.context = context;
 	}
-
-	ConcurrentHashMap<String, Author> authors = new ConcurrentHashMap<String, Author>();
 
 	public void load() {
 
@@ -50,7 +52,7 @@ public class Authors {
 				return;
 			Author author = authors.get(fields[2]);
 			if (author == null)
-				author = new Author(fields[2]);
+				author = new Author(id.incrementAndGet(), fields[2]);
 			author.addPaper(context.papers.getPapers().get(Integer.parseInt(fields[0])));
 			author.addPaper(context.papers.getPapers().get(Integer.parseInt(fields[1])));
 			authors.put(fields[2], author);
