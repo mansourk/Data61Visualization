@@ -16,7 +16,6 @@ public class GLAlignedRectangle {
 
 	public void clear() { isEmpty = true; }
 
-	// Enlarge the rectangle as necessary to contain the given point
 	public void bound( GLPoint p ) {
 		if ( isEmpty ) {
 			min.copy(p);
@@ -32,7 +31,6 @@ public class GLAlignedRectangle {
 		}
 	}
 
-	// Enlarge the rectangle as necessary to contain the given rectangle
 	public void bound( GLAlignedRectangle rect ) {
 		bound( rect.min );
 		bound( rect.max );
@@ -47,8 +45,11 @@ public class GLAlignedRectangle {
 	}
 
 	public GLPoint getMin() { return min; }
+	
 	public GLPoint getMax() { return max; }
+	
 	public GLVector getDiagonal() { return GLPoint.diff(max,min); }
+	
 	public GLPoint getCenter() {
 		return GLPoint.average( min, max );
 	}
