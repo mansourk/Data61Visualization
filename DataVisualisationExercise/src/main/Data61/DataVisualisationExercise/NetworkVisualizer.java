@@ -6,13 +6,16 @@ import com.jogamp.opengl.GLAutoDrawable;
 
 public class NetworkVisualizer {
 
-	public GraphVisualisationApp graphVisualisationApp = null;
+	private GraphVisualisationApp graphVisualisationApp = null;
+	private Network network;
 	private Shape networkDecorator = null;
-	ReentrantLock lock = new ReentrantLock(true);
+	ReentrantLock drawNetworkLock = new ReentrantLock(true);
+	ReentrantLock userActionLock = new ReentrantLock(true);
 
 	public NetworkVisualizer(GraphVisualisationApp graphVisualisationApp, Network network) {
+		this.network = network;
 		this.graphVisualisationApp = graphVisualisationApp;
-		this.networkDecorator = new RandomColorNetworkDecorator(network, graphVisualisationApp);
+		this.networkDecorator = new ToolTipLableNetworkDecorator(network, graphVisualisationApp, null);
 	}
 
 	public void init(GLAutoDrawable drawable) {
@@ -23,10 +26,17 @@ public class NetworkVisualizer {
 		GraphicsDrawer.resize(w, h);
 	}
 
-	public void drawNetwork() {
+	public void handleUserAction(float mouseX, float mouseY) {
+		userActionLock.lock();
+		Node node = network.findNearestNode(mouseX, mouseY);
+		((ToolTipLableNetworkDecorator)networkDecorator).setToolTipNode(node);
+		graphVisualisationApp.redraw();
+		userActionLock.unlock();
+	}
 
-		lock.lock();
+	public void drawNetwork() {
+		drawNetworkLock.lock();
 		networkDecorator.draw();
-		lock.unlock();
+		drawNetworkLock.unlock();
 	}
 }

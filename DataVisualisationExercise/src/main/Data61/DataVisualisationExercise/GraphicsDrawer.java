@@ -4,6 +4,7 @@ import java.lang.Math;
 
 import com.jogamp.opengl.GL;
 import com.jogamp.opengl.GL2;
+import com.jogamp.opengl.GL2ES3;
 import com.jogamp.opengl.GLAutoDrawable;
 import com.jogamp.opengl.fixedfunc.GLLightingFunc;
 import com.jogamp.opengl.fixedfunc.GLMatrixFunc;
@@ -24,13 +25,20 @@ class GraphicsDrawer {
 	private static float scaleFactorInWorldSpaceUnitsPerPixel = 1.0f;
 	public static final float DEFAULT_NODE_RADIUS = 6;
 
+	public static float convertPixelsToWorldSpaceUnitsX(float XInPixels) {
+		return (XInPixels - offsetXInPixels) * scaleFactorInWorldSpaceUnitsPerPixel;
+	}
+
+	public static float convertPixelsToWorldSpaceUnitsY(float YInPixels) {
+		return (YInPixels - offsetYInPixels) * scaleFactorInWorldSpaceUnitsPerPixel;
+	}
+
 	public static void init(GLAutoDrawable drawable) {
 		GL2 = drawable.getGL().getGL2();
 		if (glut == null)
 			glut = new GLUT();
 	}
 
-	
 	public static void resize(int w, int h) {
 		if (!hasFrameOrResizeBeenCalledBefore) {
 			windowWidthInPixels = w;
@@ -110,4 +118,35 @@ class GraphicsDrawer {
 		}
 		GL2.glEnd();
 	}
+
+	public static void drawText(String label, float x, float y, float radius, Color c) {
+		if (label == null || label.isEmpty())
+			return;
+		setColor(c);
+		float x0 = x + 2 * radius;
+		float y0 = y + 12 / 2;
+
+		float ascent = (12 * 119.05f) / 119.05f;
+		y0 += 12 - ascent;
+
+		GL2.glPushMatrix();
+		GL2.glTranslatef(x0, y0, 0);
+		GL2.glScalef(1, -1, 1);
+		float sf = ascent / 119.05f;
+		GL2.glScalef(sf, sf, 1);
+		for (int j = 0; j < label.length(); ++j)
+			glut.glutStrokeCharacter(GLUT.STROKE_MONO_ROMAN, label.charAt(j));
+		GL2.glPopMatrix();
+
+	}
+
+	public static void drawRectangle(float x, float y, float width, float height) {
+		GL2.glBegin(GL2ES3.GL_QUADS);
+		GL2.glVertex2f(x, y);
+		GL2.glVertex2f(x, y + height);
+		GL2.glVertex2f(x + width, y + height);
+		GL2.glVertex2f(x + width, y);
+		GL2.glEnd();
+	}
+
 }

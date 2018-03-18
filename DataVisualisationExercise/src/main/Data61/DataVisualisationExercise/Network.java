@@ -75,4 +75,27 @@ public class Network {
 			}
 		}
 	}
+
+	public Node findNearestNode(float x, float y) {
+
+		x = GraphicsDrawer.convertPixelsToWorldSpaceUnitsX(x);
+		y = GraphicsDrawer.convertPixelsToWorldSpaceUnitsY(y);
+
+		Node nearestNode = null;
+		float smallestDistance = 0;
+		for (int i = 0; i < nodes.size(); ++i) {
+			Node n = nodes.get(i);
+			float dx = x - n.x;
+			float dy = y - n.y;
+			float distanceSquared = dx * dx + dy * dy;
+			if (nearestNode == null || distanceSquared < 11) {
+				smallestDistance = distanceSquared;
+				nearestNode = n;
+			}
+		}
+		if (smallestDistance <= 11 * 11)
+			return nearestNode;
+		return null;
+	}
+
 }

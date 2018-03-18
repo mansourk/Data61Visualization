@@ -15,7 +15,9 @@ public class ApplicationContext {
 		Network network = new Network();
 
 		this.authors.getAuthors().values().stream().forEach(author -> {
-			network.addNode(new Node(author.getName(), author.getId()));
+			String lable = author.getName() + "|ART:" + author.getPapers().size() 
+					+ "|CA:" + author.getCoAuthors().size();
+			network.addNode(new Node(lable, author.getId()));
 		});
 
 		this.authors.getAuthors().values().stream().forEach(author -> {

@@ -29,9 +29,10 @@ public class GraphVisualisationApp extends GLCanvas implements MouseMotionListen
 		ApplicationContext context = new ApplicationContext();
 		visualizer = new NetworkVisualizer(this, context.buildNetwork());
 		addGLEventListener(this);
+		addMouseMotionListener(this);
 	}
 
-	public void requestRedraw() {
+	public void redraw() {
 		repaint();
 	}
 
@@ -93,13 +94,13 @@ public class GraphVisualisationApp extends GLCanvas implements MouseMotionListen
 	}
 
 	@Override
-	public void mouseDragged(MouseEvent arg0) {
+	public void mouseDragged(MouseEvent event) {
 		
 	}
 
 	@Override
-	public void mouseMoved(MouseEvent arg0) {
-		
+	public void mouseMoved(MouseEvent event) {
+	    visualizer.handleUserAction(event.getX(), event.getY());
 	}
 
 }
