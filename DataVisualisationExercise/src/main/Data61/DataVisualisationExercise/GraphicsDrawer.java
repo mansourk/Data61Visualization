@@ -13,24 +13,25 @@ import java.awt.Color;
 
 class GraphicsDrawer {
 
-	private GL2 GL2 = null;
-	private GLUT glut = null;
+	private static GL2 GL2 = null;
+	private static GLUT glut = null;
 
-	private int windowWidthInPixels = 10;
-	private int windowHeightInPixels = 10;
-	private boolean hasFrameOrResizeBeenCalledBefore = false;
+	private static int windowWidthInPixels = 10;
+	private static int windowHeightInPixels = 10;
+	private static boolean hasFrameOrResizeBeenCalledBefore = false;
+	private static float offsetXInPixels = 0;
+	private static float offsetYInPixels = 0;
+	private static float scaleFactorInWorldSpaceUnitsPerPixel = 1.0f;
+	public static final float DEFAULT_NODE_RADIUS = 6;
 
-	public void init(GLAutoDrawable drawable) {
-		this.GL2 = drawable.getGL().getGL2();
+	public static void init(GLAutoDrawable drawable) {
+		GL2 = drawable.getGL().getGL2();
 		if (glut == null)
 			glut = new GLUT();
 	}
 
-	private float offsetXInPixels = 0;
-	private float offsetYInPixels = 0;
-	private float scaleFactorInWorldSpaceUnitsPerPixel = 1.0f;
 	
-	public void resize(int w, int h) {
+	public static void resize(int w, int h) {
 		if (!hasFrameOrResizeBeenCalledBefore) {
 			windowWidthInPixels = w;
 			windowHeightInPixels = h;
@@ -44,7 +45,7 @@ class GraphicsDrawer {
 		GL2.glViewport(0, 0, w, h);
 	}
 
-	public void setCoordinateSystemToWorldSpaceUnits() {
+	public static void setCoordinateSystemToWorldSpaceUnits() {
 		GL2.glMatrixMode(GLMatrixFunc.GL_PROJECTION);
 		GL2.glLoadIdentity();
 		GL2.glScalef(1, -1, 1);
@@ -55,12 +56,12 @@ class GraphicsDrawer {
 				offsetYInPixels * scaleFactorInWorldSpaceUnitsPerPixel, 0);
 	}
 
-	public void clear(float r, float g, float b) {
+	public static void clear(float r, float g, float b) {
 		GL2.glClearColor(r, g, b, 0);
 		GL2.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
 	}
 
-	public void setup() {
+	public static void setup() {
 		GL2.glMatrixMode(GLMatrixFunc.GL_MODELVIEW);
 		GL2.glLoadIdentity();
 		GL2.glDisable(GL.GL_DEPTH_TEST);
@@ -69,19 +70,19 @@ class GraphicsDrawer {
 		GL2.glShadeModel(GLLightingFunc.GL_FLAT);
 	}
 
-	public void setColor(float r, float g, float b) {
+	public static void setColor(float r, float g, float b) {
 		GL2.glColor3f(r, g, b);
 	}
 
-	public void setColor(Color c) {
+	public static void setColor(Color c) {
 		setColor(c.getRed() / 255.0f, c.getGreen() / 255.0f, c.getBlue() / 255.0f);
 	}
 
-	public void setLineWidth(float width) {
+	public static void setLineWidth(float width) {
 		GL2.glLineWidth(width);
 	}
 
-	public void drawLine(float x1, float y1, float x2, float y2) {
+	public static void drawLine(float x1, float y1, float x2, float y2) {
 		GL2.glBegin(GL.GL_LINES);
 		GL2.glVertex3f(x1, y1, 0);
 		GL2.glVertex3f(x2, y2, 0);
@@ -91,7 +92,7 @@ class GraphicsDrawer {
 		GL2.glEnd();
 	}
 
-	public void drawCircle(float x, float y, float radius, boolean isFilled) {
+	public static void drawCircle(float x, float y, float radius, boolean isFilled) {
 		x += radius;
 		y += radius;
 		if (isFilled) {

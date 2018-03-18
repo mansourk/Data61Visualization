@@ -1,21 +1,10 @@
 package Data61.DataVisualisationExercise;
 
-import java.awt.Color;
 import java.util.ArrayList;
-import java.util.Random;
 
 public class Network {
 
 	private ArrayList<Node> nodes = new ArrayList<Node>();
-
-	public void assignRandomColorsToAllNodes(Random random) {
-		for (int i = 0; i < nodes.size(); ++i) {
-			Node n = nodes.get(i);
-			int threeBits = random.nextInt(7);
-			n.color = new Color((threeBits & 4) != 0 ? 1.0f : 0, (threeBits & 2) != 0 ? 1.0f : 0,
-					(threeBits & 1) != 0 ? 1.0f : 0);
-		}
-	}
 
 	public int getNumNodes() {
 		return nodes.size();
@@ -36,15 +25,11 @@ public class Network {
 			nodes.add(n);
 	}
 
-	public void addEdge(Node n1, Node n2) {
-		if (n1 == n2 || n1 == null || n2 == null)
+	public void addEdge(Node from, Node to) {
+		if (from == to || from == null || to == null)
 			return;
-		if (!n1.neighbours.contains(n2)) {
-			n1.neighbours.add(n2);
-		}
-		if (!n2.neighbours.contains(n1)) {
-			n2.neighbours.add(n1);
-		}
+		from.addEdge(to);
+		to.addEdge(from);
 	}
 
 	public void addEdge(int nodeIndex1, int nodeIndex2) {

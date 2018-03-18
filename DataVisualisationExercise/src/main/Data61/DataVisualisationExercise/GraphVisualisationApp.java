@@ -3,6 +3,8 @@ package Data61.DataVisualisationExercise;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionListener;
 import java.awt.BorderLayout;
 
 import javax.swing.JFrame;
@@ -13,7 +15,7 @@ import com.jogamp.opengl.GLCapabilities;
 import com.jogamp.opengl.GLEventListener;
 import com.jogamp.opengl.awt.GLCanvas;
 
-public class GraphVisualisationApp extends GLCanvas implements GLEventListener {
+public class GraphVisualisationApp extends GLCanvas implements MouseMotionListener, GLEventListener {
 
 	private static final long serialVersionUID = 1L;
 	private NetworkVisualizer visualizer = null;
@@ -88,6 +90,16 @@ public class GraphVisualisationApp extends GLCanvas implements GLEventListener {
 
 	public Dimension getPreferredSize() {
 		return Toolkit.getDefaultToolkit().getScreenSize();
+	}
+
+	@Override
+	public void mouseDragged(MouseEvent arg0) {
+		
+	}
+
+	@Override
+	public void mouseMoved(MouseEvent arg0) {
+		
 	}
 
 }

@@ -1,19 +1,17 @@
 package Data61.DataVisualisationExercise;
 
 import java.awt.Color;
-import java.util.ArrayList;
+import java.util.HashSet;
 
-public class Node {
+public class Node implements Shape {
 
-	public ArrayList<Node> neighbours = new ArrayList<Node>();
+	public HashSet<Edge> edges = new HashSet<Edge>();
 	public String label;
-	public boolean showLabel = false;
 	public float x = 0, y = 0;
-	public Color color;
+	public Color color = Color.black;
+	public Color borderColor = Color.black;
+	public float radius;
 	private int index = -1;
-
-	public Node() {
-	}
 
 	public Node(String label) {
 		this(label, -1);
@@ -30,6 +28,20 @@ public class Node {
 
 	public int getIndex() {
 		return index;
+	}
+
+	public void addEdge(Node to) {
+		edges.add(new Edge(this, to));
+	}
+
+	@Override
+	public void draw() {
+		float x = this.x;
+		float y = this.y;
+		GraphicsDrawer.setColor(color);
+		GraphicsDrawer.drawCircle(x - radius, y - radius, radius, true);
+		GraphicsDrawer.setColor(borderColor);
+		GraphicsDrawer.drawCircle(x - radius, y - radius, radius, false);
 	}
 
 }
