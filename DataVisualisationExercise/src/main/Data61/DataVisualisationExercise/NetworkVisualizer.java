@@ -11,6 +11,7 @@ public class NetworkVisualizer {
 	private Shape networkDecorator = null;
 	ReentrantLock drawNetworkLock = new ReentrantLock(true);
 	ReentrantLock userActionLock = new ReentrantLock(true);
+	boolean isToolTipOn = false;
 
 	public NetworkVisualizer(GraphVisualisationApp graphVisualisationApp, Network network) {
 		this.network = network;
@@ -26,12 +27,40 @@ public class NetworkVisualizer {
 		GraphicsDrawer.resize(w, h);
 	}
 
-	public void handleUserAction(float mouseX, float mouseY) {
+	public void handleToolTip(float mouseX, float mouseY) {
+
 		userActionLock.lock();
+
 		Node node = network.findNearestNode(mouseX, mouseY);
-		((ToolTipLableNetworkDecorator)networkDecorator).setToolTipNode(node);
-		graphVisualisationApp.redraw();
+		if (node != null || isToolTipOn) {
+			((ToolTipLableNetworkDecorator) networkDecorator).setToolTipNode(node);
+			graphVisualisationApp.redraw();
+			isToolTipOn = (node != null);
+		}
+		
 		userActionLock.unlock();
+		
+	}
+
+	public void handleCenterGraphOnNode(float mouseX, float mouseY) {
+
+		userActionLock.lock();
+
+		Node centerNode = network.findNearestNode(mouseX, mouseY);
+
+		if (centerNode != null) {
+			NetworkTraversal.traverse(network, centerNode);
+		} else {
+			network.visible();
+		}
+
+		ToolTipLableNetworkDecorator decorator = (ToolTipLableNetworkDecorator) networkDecorator;
+		decorator.setToolTipNode(centerNode);
+		decorator.setNetwork(network);
+		graphVisualisationApp.redraw();
+
+		userActionLock.unlock();
+
 	}
 
 	public void drawNetwork() {

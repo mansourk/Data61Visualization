@@ -12,7 +12,7 @@ public class Authors {
 	ConcurrentHashMap<String, Author> authors = new ConcurrentHashMap<String, Author>();
 
 	private AtomicInteger id = new AtomicInteger(-1);
-	
+
 	public Authors(ApplicationContext context) {
 		this.context = context;
 	}
@@ -21,7 +21,8 @@ public class Authors {
 
 		try {
 			FileReaderIterator iterator = new FileReaderIterator("paperlinks.csv");
-			ExecutorService executorService = Executors.newFixedThreadPool(5);
+			// Not thread safe because two threads might create two authors for one person which might causes error.
+			ExecutorService executorService = Executors.newFixedThreadPool(1);
 			while (iterator.hasNext()) {
 				executorService.execute(new AuthorBuilder(iterator.next()));
 			}
@@ -55,7 +56,7 @@ public class Authors {
 				author = new Author(id.incrementAndGet(), fields[2]);
 			author.addPaper(context.papers.getPapers().get(Integer.parseInt(fields[0])));
 			author.addPaper(context.papers.getPapers().get(Integer.parseInt(fields[1])));
-			authors.put(fields[2], author);
+			authors.put(author.getName(), author);
 			context.papers.getPapers().get(Integer.parseInt(fields[0])).addAuthor(author);
 			context.papers.getPapers().get(Integer.parseInt(fields[1])).addAuthor(author);
 

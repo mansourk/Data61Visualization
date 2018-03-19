@@ -27,7 +27,7 @@ public class DefaultNetworkDecorator implements Shape {
 	}
 
 	protected void assignColorsToAllNodes() {
-		
+
 	}
 
 	protected Dimension getDimension() {
@@ -53,22 +53,22 @@ public class DefaultNetworkDecorator implements Shape {
 	}
 
 	protected void drawNodes() {
-		for (int i = 0; i < network.getNumNodes(); ++i) {
-			Node n = network.getNode(i);
+		network.getNodes().values().stream().filter(n -> n.isVisible()).forEach(n -> {
 			n.radius = defaultNodeRadius();
 			n.draw();
-		}
+		});
 	}
-	
-	protected float defaultNodeRadius(){
+
+	protected float defaultNodeRadius() {
 		return GraphicsDrawer.DEFAULT_NODE_RADIUS;
 	}
-	
+
 	protected void drawEdges() {
-		for (int i = 0; i < network.getNumNodes(); ++i) {
+		for (int i = 0; i < network.getNumNodes(); i++) {
 			Node n = network.getNode(i);
 			for (Edge edge : n.edges) {
-				if (edge.getFrom().getIndex() < edge.getTo().getIndex())
+				if (edge.getFrom().isVisible() && edge.getTo().isVisible()
+						&& edge.getFrom().getIndex() < edge.getTo().getIndex())
 					edge.draw();
 			}
 		}

@@ -25,7 +25,7 @@ public class ToolTipLableNetworkDecorator extends RandomColorNetworkDecorator {
 	public void draw() {
 
 		super.draw();
-		if (toolTipNode != null) {
+		if (toolTipNode != null	&& toolTipNode.visible) {
 			drawBackGround(toolTipNode);
 			GraphicsDrawer.drawText(toolTipNode.label, toolTipNode.x, toolTipNode.y, toolTipNode.radius,
 					toolTipNode.color);
@@ -42,6 +42,10 @@ public class ToolTipLableNetworkDecorator extends RandomColorNetworkDecorator {
 
 	public void setToolTipNode(Node toolTipNode) {
 		this.toolTipNode = toolTipNode;
+	}
+	
+	public void setNetwork(Network network) {
+		this.network = network;
 	}
 
 	protected void assignColorsToAllNodes() {

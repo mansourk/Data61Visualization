@@ -11,6 +11,8 @@ public class Node implements Shape {
 	public Color color = Color.black;
 	public Color borderColor = Color.black;
 	public float radius;
+	public boolean visible = false;
+
 	private int index = -1;
 
 	public Node(String label) {
@@ -20,6 +22,11 @@ public class Node implements Shape {
 	public Node(String label, int index) {
 		this.label = label;
 		this.index = index;
+	}
+
+	public Node(String label, int index, boolean visible) {
+		this(label, index);
+		this.visible = visible;
 	}
 
 	public void setIndex(int i) {
@@ -32,6 +39,10 @@ public class Node implements Shape {
 
 	public void addEdge(Node to) {
 		edges.add(new Edge(this, to));
+	}
+
+	public boolean isVisible() {
+		return visible;
 	}
 
 	@Override

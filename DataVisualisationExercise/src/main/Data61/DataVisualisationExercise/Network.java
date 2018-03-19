@@ -1,28 +1,28 @@
 package Data61.DataVisualisationExercise;
 
-import java.util.ArrayList;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class Network {
 
-	private ArrayList<Node> nodes = new ArrayList<Node>();
+	private ConcurrentHashMap<Integer, Node> nodes = new ConcurrentHashMap<Integer, Node>();
 
 	public int getNumNodes() {
 		return nodes.size();
 	}
 
 	public Node getNode(int index) {
-		if (index < 0 || index >= nodes.size())
+		if (index < 0 || index > nodes.size())
 			return null;
 		return nodes.get(index);
 	}
 
-	public ArrayList<Node> getNodes() {
+	public ConcurrentHashMap<Integer, Node> getNodes() {
 		return nodes;
 	}
 
 	public void addNode(Node n) {
-		if (!nodes.contains(n))
-			nodes.add(n);
+		if (!nodes.containsKey(n.getIndex()))
+			nodes.put(n.getIndex(), n);
 	}
 
 	public void addEdge(Node from, Node to) {
@@ -40,7 +40,7 @@ public class Network {
 		assert n != null;
 		int index = n.getIndex();
 		if (index < 0 || index >= nodes.size() || getNode(index) != n) {
-			for (int i = 0; i < nodes.size(); ++i) {
+			for (int i = 0; i < nodes.size(); i++) {
 				nodes.get(i).setIndex(i);
 			}
 		}
@@ -53,7 +53,7 @@ public class Network {
 			return;
 		GLAlignedRectangle rectangle = new GLAlignedRectangle();
 		float distance = rectangle.getDiagonal().length();
-		for (int i = 0; i < nodes.size(); ++i) {
+		for (int i = 0; i < nodes.size(); i++) {
 			Node n = nodes.get(i);
 			if (boundingRectangle == null) {
 				n.x += distance * (Math.random() - 0.5f);
@@ -83,8 +83,11 @@ public class Network {
 
 		Node nearestNode = null;
 		float smallestDistance = 0;
-		for (int i = 0; i < nodes.size(); ++i) {
+		for (int i = 0; i < nodes.size(); i++) {
 			Node n = nodes.get(i);
+			if (n == null) {
+				System.out.println(i);
+			}
 			float dx = x - n.x;
 			float dy = y - n.y;
 			float distanceSquared = dx * dx + dy * dy;
@@ -96,6 +99,14 @@ public class Network {
 		if (smallestDistance <= 11 * 11)
 			return nearestNode;
 		return null;
+	}
+
+	public void visible() {
+		this.getNodes().values().stream().forEach(node -> node.visible = true);
+	}
+
+	public void inVisible() {
+		this.getNodes().values().stream().forEach(node -> node.visible = false);
 	}
 
 }

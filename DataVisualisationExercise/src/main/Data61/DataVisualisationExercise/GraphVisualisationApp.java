@@ -4,6 +4,7 @@ import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.BorderLayout;
 
@@ -15,7 +16,7 @@ import com.jogamp.opengl.GLCapabilities;
 import com.jogamp.opengl.GLEventListener;
 import com.jogamp.opengl.awt.GLCanvas;
 
-public class GraphVisualisationApp extends GLCanvas implements MouseMotionListener, GLEventListener {
+public class GraphVisualisationApp extends GLCanvas implements MouseListener, MouseMotionListener, GLEventListener {
 
 	private static final long serialVersionUID = 1L;
 	private NetworkVisualizer visualizer = null;
@@ -30,6 +31,7 @@ public class GraphVisualisationApp extends GLCanvas implements MouseMotionListen
 		visualizer = new NetworkVisualizer(this, context.buildNetwork());
 		addGLEventListener(this);
 		addMouseMotionListener(this);
+		addMouseListener(this);
 	}
 
 	public void redraw() {
@@ -69,7 +71,7 @@ public class GraphVisualisationApp extends GLCanvas implements MouseMotionListen
 		frame.pack();
 		frame.setVisible(true);
 	}
-	
+
 	public static void main(String[] args) {
 
 		GLCapabilities caps = new GLCapabilities(null);
@@ -95,12 +97,37 @@ public class GraphVisualisationApp extends GLCanvas implements MouseMotionListen
 
 	@Override
 	public void mouseDragged(MouseEvent event) {
-		
+
 	}
 
 	@Override
 	public void mouseMoved(MouseEvent event) {
-	    visualizer.handleUserAction(event.getX(), event.getY());
+		visualizer.handleToolTip(event.getX(), event.getY());
 	}
 
+	@Override
+	public void mouseClicked(MouseEvent event) {
+		visualizer.handleCenterGraphOnNode(event.getX(), event.getY());
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent e) {
+	}
+
+	@Override
+	public void mouseExited(MouseEvent e) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void mousePressed(MouseEvent e) {
+
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		// TODO Auto-generated method stub
+
+	}
 }
