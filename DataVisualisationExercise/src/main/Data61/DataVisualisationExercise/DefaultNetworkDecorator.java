@@ -34,18 +34,13 @@ public class DefaultNetworkDecorator implements Shape {
 		return graphVisualisationApp.getPreferredSize();
 	}
 
-	protected float networkRadius() {
-		return (float) (Math.min(getDimension().getWidth(), getDimension().getHeight()) / 2.0f * 0.9f);
-	}
-
 	protected void setPositionsOfNodes() {
 
 		Dimension dimension = getDimension();
-		float radius = networkRadius();
 
 		network.randomizePositionsOfNodes(new GLAlignedRectangle(
-				new GLPoint((float) dimension.getWidth() / 2 - radius, (float) dimension.getHeight() / 2 - radius),
-				new GLPoint((float) dimension.getWidth() / 2 + radius, (float) dimension.getHeight() / 2 + radius)));
+				new GLPoint((float) (-dimension.getWidth() * 50 / 100), (float) (-dimension.getHeight() * 50 / 100)),
+				new GLPoint((float) (dimension.getWidth() * 50 / 100), (float) (dimension.getHeight() * 50 / 100))));
 	}
 
 	protected void edgeLineWidth(float width) {

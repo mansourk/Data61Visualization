@@ -11,27 +11,16 @@ import com.jogamp.opengl.fixedfunc.GLMatrixFunc;
 import com.jogamp.opengl.util.gl2.GLUT;
 
 import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Toolkit;
 
 class GraphicsDrawer {
 
 	private static GL2 GL2 = null;
 	private static GLUT glut = null;
 
-	private static int windowWidthInPixels = 10;
-	private static int windowHeightInPixels = 10;
 	private static boolean hasFrameOrResizeBeenCalledBefore = false;
-	private static float offsetXInPixels = 0;
-	private static float offsetYInPixels = 0;
-	private static float scaleFactorInWorldSpaceUnitsPerPixel = 1.0f;
-	public static final float DEFAULT_NODE_RADIUS = 6;
-
-	public static float convertPixelsToWorldSpaceUnitsX(float XInPixels) {
-		return (XInPixels - offsetXInPixels) * scaleFactorInWorldSpaceUnitsPerPixel;
-	}
-
-	public static float convertPixelsToWorldSpaceUnitsY(float YInPixels) {
-		return (YInPixels - offsetYInPixels) * scaleFactorInWorldSpaceUnitsPerPixel;
-	}
+	public static final float DEFAULT_NODE_RADIUS = 12;
 
 	public static void init(GLAutoDrawable drawable) {
 		GL2 = drawable.getGL().getGL2();
@@ -41,27 +30,19 @@ class GraphicsDrawer {
 
 	public static void resize(int w, int h) {
 		if (!hasFrameOrResizeBeenCalledBefore) {
-			windowWidthInPixels = w;
-			windowHeightInPixels = h;
 			GL2.glViewport(0, 0, w, h);
 			hasFrameOrResizeBeenCalledBefore = true;
 			return;
 		}
 
-		windowWidthInPixels = w;
-		windowHeightInPixels = h;
 		GL2.glViewport(0, 0, w, h);
 	}
 
 	public static void setCoordinateSystemToWorldSpaceUnits() {
 		GL2.glMatrixMode(GLMatrixFunc.GL_PROJECTION);
 		GL2.glLoadIdentity();
-		GL2.glScalef(1, -1, 1);
-		GL2.glTranslatef(-1, -1, 0);
-		GL2.glScalef(2.0f / (scaleFactorInWorldSpaceUnitsPerPixel * windowWidthInPixels),
-				2.0f / (scaleFactorInWorldSpaceUnitsPerPixel * windowHeightInPixels), 1);
-		GL2.glTranslatef(offsetXInPixels * scaleFactorInWorldSpaceUnitsPerPixel,
-				offsetYInPixels * scaleFactorInWorldSpaceUnitsPerPixel, 0);
+		Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
+		GL2.glOrtho(-dimension.getWidth(), dimension.getWidth(), -dimension.getHeight(), dimension.getHeight(), -1, 1);
 	}
 
 	public static void clear(float r, float g, float b) {
@@ -101,13 +82,13 @@ class GraphicsDrawer {
 	}
 
 	public static void drawCircle(float x, float y, float radius, boolean isFilled) {
-		x += radius;
-		y += radius;
+
 		if (isFilled) {
 			GL2.glBegin(GL.GL_TRIANGLE_FAN);
 			GL2.glVertex2f(x, y);
-		} else
+		} else {
 			GL2.glBegin(GL.GL_LINE_LOOP);
+		}
 
 		int numSides = (int) (2 * Math.PI * radius + 1);
 		float deltaAngle = 2 * (float) Math.PI / numSides;
@@ -126,13 +107,14 @@ class GraphicsDrawer {
 		float x0 = x + 2 * radius;
 		float y0 = y + 12 / 2;
 
-		float ascent = (12 * 119.05f) / 119.05f;
+		float ascent = (12 * 70f) / 70f;
+
 		y0 += 12 - ascent;
 
 		GL2.glPushMatrix();
 		GL2.glTranslatef(x0, y0, 0);
-		GL2.glScalef(1, -1, 1);
-		float sf = ascent / 119.05f;
+		GL2.glScalef(1, 1, 1);
+		float sf = ascent / 70f;
 		GL2.glScalef(sf, sf, 1);
 		for (int j = 0; j < label.length(); ++j)
 			glut.glutStrokeCharacter(GLUT.STROKE_MONO_ROMAN, label.charAt(j));
@@ -149,4 +131,7 @@ class GraphicsDrawer {
 		GL2.glEnd();
 	}
 
+	public static GLPoint convertUnit2CustomCoordinate(float x, float y, Dimension defaultSize) {
+		return new GLPoint((2 * x) - defaultSize.width, -(2 * y) + defaultSize.height);
+	}
 }

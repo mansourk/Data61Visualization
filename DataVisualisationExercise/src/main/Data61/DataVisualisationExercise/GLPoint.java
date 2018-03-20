@@ -29,9 +29,9 @@ public class GLPoint {
 		return p[1] = y;
 	}
 
-	public void copy(GLPoint P) {
-		p[0] = P.p[0];
-		p[1] = P.p[1];
+	public void copy(GLPoint point) {
+		p[0] = point.p[0];
+		p[1] = point.p[1];
 	}
 
 	public void addX(float val) {

@@ -50,9 +50,12 @@ public class Node implements Shape {
 		float x = this.position.x();
 		float y = this.position.y();
 		GraphicsDrawer.setColor(color);
-		GraphicsDrawer.drawCircle(x - radius, y - radius, radius, true);
+//		GraphicsDrawer.drawCircle(x - radius, y - radius, radius, true);
+		GraphicsDrawer.drawCircle(x, y, radius, true);
 		GraphicsDrawer.setColor(borderColor);
-		GraphicsDrawer.drawCircle(x - radius, y - radius, radius, false);
+//		GraphicsDrawer.drawCircle(x , y - radius, radius, false);
+		GraphicsDrawer.drawCircle(x, y, radius, false);
+
 	}
 
 }

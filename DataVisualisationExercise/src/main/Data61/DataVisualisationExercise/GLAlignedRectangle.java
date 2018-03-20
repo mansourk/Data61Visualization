@@ -8,16 +8,17 @@ public class GLAlignedRectangle {
 
 	public GLAlignedRectangle() {
 	}
-	public GLAlignedRectangle( GLPoint p0, GLPoint p1 ) {
-		min.copy( p0 );
-		max.copy( p1 );
+	
+	public GLAlignedRectangle(GLPoint p0, GLPoint p1) {
+		min.copy(p0);
+		max.copy(p1);
 		isEmpty = false;
 	}
 
 	public void clear() { isEmpty = true; }
 
 	public void bound( GLPoint p ) {
-		if ( isEmpty ) {
+		if (isEmpty) {
 			min.copy(p);
 			max.copy(p);
 			isEmpty = false;

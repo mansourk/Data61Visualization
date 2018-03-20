@@ -23,7 +23,6 @@ public class ToolTipLableNetworkDecorator extends RandomColorNetworkDecorator {
 
 	@Override
 	public void draw() {
-
 		super.draw();
 		if (toolTipNode != null	&& toolTipNode.visible) {
 			drawBackGround(toolTipNode);
@@ -34,9 +33,9 @@ public class ToolTipLableNetworkDecorator extends RandomColorNetworkDecorator {
 
 	private void drawBackGround(Node toolTipNode) {
 		GraphicsDrawer.setColor(Color.WHITE);
-		float width = (toolTipNode.label.length() * 12);
-		float height = (toolTipNode.radius) + 12;
-		float y = toolTipNode.position.y() - 6 - toolTipNode.radius / 2;
+		float width = (toolTipNode.label.length() * 24);
+		float height = (toolTipNode.radius) + 36;
+		float y = toolTipNode.position.y() - toolTipNode.radius;
 		GraphicsDrawer.drawRectangle(toolTipNode.position.x(), y, width, height);
 	}
 

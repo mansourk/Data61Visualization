@@ -80,20 +80,14 @@ public class Network {
 
 	public Node findNearestNode(float x, float y) {
 
-		x = GraphicsDrawer.convertPixelsToWorldSpaceUnitsX(x);
-		y = GraphicsDrawer.convertPixelsToWorldSpaceUnitsY(y);
-
 		Node nearestNode = null;
 		float smallestDistance = 0;
 		for (int i = 0; i < nodes.size(); i++) {
 			Node n = nodes.get(i);
-			if (n == null) {
-				System.out.println(i);
-			}
 			float dx = x - n.position.x();
 			float dy = y - n.position.y();
 			float distanceSquared = dx * dx + dy * dy;
-			if (nearestNode == null || distanceSquared < 12) {
+			if (nearestNode == null || distanceSquared < smallestDistance) {
 				smallestDistance = distanceSquared;
 				nearestNode = n;
 			}

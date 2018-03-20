@@ -38,7 +38,9 @@ public class NetworkVisualizer {
 
 		userActionLock.lock();
 
-		Node node = network.findNearestNode(mouseX, mouseY);
+		GLPoint input = GraphicsDrawer.convertUnit2CustomCoordinate(mouseX, mouseY,
+				graphVisualisationApp.getPreferredSize());
+		Node node = network.findNearestNode(input.x(), input.y());
 		if (node != null || isToolTipOn) {
 			((ToolTipLableNetworkDecorator) networkDecorator).setToolTipNode(node);
 			graphVisualisationApp.redraw();
@@ -63,7 +65,7 @@ public class NetworkVisualizer {
 		scheduledExecutorService.scheduleAtFixedRate(new Runnable() {
 			@Override
 			public void run() {
-				network.rotate(new GLPoint(2, 2), 90);
+				network.rotate(new GLPoint(2, 2), 45);
 				graphVisualisationApp.redraw();
 			}
 		}, 1, 1, TimeUnit.SECONDS);
@@ -85,7 +87,9 @@ public class NetworkVisualizer {
 
 		userActionLock.lock();
 
-		Node centerNode = network.findNearestNode(mouseX, mouseY);
+		GLPoint input = GraphicsDrawer.convertUnit2CustomCoordinate(mouseX, mouseY,
+				graphVisualisationApp.getPreferredSize());
+		Node centerNode = network.findNearestNode(input.x(), input.y());
 
 		if (centerNode != null) {
 			NetworkTraversal.traverse(network, centerNode);
