@@ -13,7 +13,7 @@ public class Edge implements Shape {
 
 	@Override
 	public void draw() {
-		GraphicsDrawer.drawLine(from.x, from.y, to.x, to.y);
+		GraphicsDrawer.drawLine(from.position.x(), from.position.y(), to.position.x(), to.position.y());
 	}
 
 	public boolean equals(Edge other) {

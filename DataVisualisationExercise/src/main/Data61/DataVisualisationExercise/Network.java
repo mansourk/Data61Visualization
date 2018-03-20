@@ -56,22 +56,24 @@ public class Network {
 		for (int i = 0; i < nodes.size(); i++) {
 			Node n = nodes.get(i);
 			if (boundingRectangle == null) {
-				n.x += distance * (Math.random() - 0.5f);
-				n.y += distance * (Math.random() - 0.5f);
+				n.position.add(new GLPoint((float) (distance * (Math.random() - 0.5f)),
+						(float) (distance * (Math.random() - 0.5f))));
 			} else {
-				n.x = (float) (boundingRectangle.getMin().x() + Math.random() * boundingRectangle.getDiagonal().x());
-				n.y = (float) (boundingRectangle.getMin().y() + Math.random() * boundingRectangle.getDiagonal().y());
+				n.position.setX(
+						(float) (boundingRectangle.getMin().x() + Math.random() * boundingRectangle.getDiagonal().x()));
+				n.position.setY(
+						(float) (boundingRectangle.getMin().y() + Math.random() * boundingRectangle.getDiagonal().y()));
 			}
 
 			if (boundingRectangle != null) {
-				if (n.x < boundingRectangle.getMin().x())
-					n.x = boundingRectangle.getMin().x();
-				else if (n.x > boundingRectangle.getMax().x())
-					n.x = boundingRectangle.getMax().x();
-				if (n.y < boundingRectangle.getMin().y())
-					n.y = boundingRectangle.getMin().y();
-				else if (n.y > boundingRectangle.getMax().y())
-					n.y = boundingRectangle.getMax().y();
+				if (n.position.x() < boundingRectangle.getMin().x())
+					n.position.setX(boundingRectangle.getMin().x());
+				else if (n.position.x() > boundingRectangle.getMax().x())
+					n.position.setX(boundingRectangle.getMax().x());
+				if (n.position.y() < boundingRectangle.getMin().y())
+					n.position.setY(boundingRectangle.getMin().y());
+				else if (n.position.y() > boundingRectangle.getMax().y())
+					n.position.setY(boundingRectangle.getMax().y());
 			}
 		}
 	}
@@ -88,15 +90,15 @@ public class Network {
 			if (n == null) {
 				System.out.println(i);
 			}
-			float dx = x - n.x;
-			float dy = y - n.y;
+			float dx = x - n.position.x();
+			float dy = y - n.position.y();
 			float distanceSquared = dx * dx + dy * dy;
-			if (nearestNode == null || distanceSquared < 11) {
+			if (nearestNode == null || distanceSquared < 12) {
 				smallestDistance = distanceSquared;
 				nearestNode = n;
 			}
 		}
-		if (smallestDistance <= 11 * 11)
+		if (smallestDistance <= 12 * 12)
 			return nearestNode;
 		return null;
 	}
@@ -107,6 +109,10 @@ public class Network {
 
 	public void inVisible() {
 		this.getNodes().values().stream().forEach(node -> node.visible = false);
+	}
+
+	public void rotate(GLPoint pivotPoint, double rotationDegree) {
+		this.nodes.values().stream().forEach(n -> n.position.rotate(pivotPoint, rotationDegree));
 	}
 
 }

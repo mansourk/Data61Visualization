@@ -3,6 +3,8 @@ package Data61.DataVisualisationExercise;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
@@ -16,7 +18,8 @@ import com.jogamp.opengl.GLCapabilities;
 import com.jogamp.opengl.GLEventListener;
 import com.jogamp.opengl.awt.GLCanvas;
 
-public class GraphVisualisationApp extends GLCanvas implements MouseListener, MouseMotionListener, GLEventListener {
+public class GraphVisualisationApp extends GLCanvas
+		implements KeyListener, MouseListener, MouseMotionListener, GLEventListener {
 
 	private static final long serialVersionUID = 1L;
 	private NetworkVisualizer visualizer = null;
@@ -32,6 +35,7 @@ public class GraphVisualisationApp extends GLCanvas implements MouseListener, Mo
 		addGLEventListener(this);
 		addMouseMotionListener(this);
 		addMouseListener(this);
+		addKeyListener(this);
 	}
 
 	public void redraw() {
@@ -84,7 +88,6 @@ public class GraphVisualisationApp extends GLCanvas implements MouseListener, Mo
 				graphVisualizationApp.startApplication();
 			}
 		});
-
 	}
 
 	@Override
@@ -117,7 +120,6 @@ public class GraphVisualisationApp extends GLCanvas implements MouseListener, Mo
 	@Override
 	public void mouseExited(MouseEvent e) {
 		// TODO Auto-generated method stub
-
 	}
 
 	@Override
@@ -128,6 +130,30 @@ public class GraphVisualisationApp extends GLCanvas implements MouseListener, Mo
 	@Override
 	public void mouseReleased(MouseEvent e) {
 		// TODO Auto-generated method stub
+	}
 
+	boolean isAltPressed = false;
+	boolean isShiftPressed = false;
+
+	public void keyPressed(KeyEvent e) {
+		if (e.getKeyCode() == KeyEvent.VK_ALT)
+			isAltPressed = true;
+		if (e.getKeyCode() == KeyEvent.VK_SHIFT)
+			isShiftPressed = true;
+	}
+
+	public void keyTyped(KeyEvent e) {
+		if (isAltPressed && isShiftPressed && (e.getKeyChar() == 'r' || e.getKeyChar() == 'R')) {
+			visualizer.stopRotating();
+		} else if (isAltPressed && (e.getKeyChar() == 'r' || e.getKeyChar() == 'R')) {
+			visualizer.startRotating();
+		}
+	}
+
+	public void keyReleased(KeyEvent e) {
+		if (e.getKeyCode() == KeyEvent.VK_ALT)
+			isAltPressed = false;
+		if (e.getKeyCode() == KeyEvent.VK_SHIFT)
+			isShiftPressed = false;
 	}
 }

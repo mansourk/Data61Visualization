@@ -7,7 +7,7 @@ public class Node implements Shape {
 
 	public HashSet<Edge> edges = new HashSet<Edge>();
 	public String label;
-	public float x = 0, y = 0;
+	public GLPoint position = new GLPoint();
 	public Color color = Color.black;
 	public Color borderColor = Color.black;
 	public float radius;
@@ -47,8 +47,8 @@ public class Node implements Shape {
 
 	@Override
 	public void draw() {
-		float x = this.x;
-		float y = this.y;
+		float x = this.position.x();
+		float y = this.position.y();
 		GraphicsDrawer.setColor(color);
 		GraphicsDrawer.drawCircle(x - radius, y - radius, radius, true);
 		GraphicsDrawer.setColor(borderColor);

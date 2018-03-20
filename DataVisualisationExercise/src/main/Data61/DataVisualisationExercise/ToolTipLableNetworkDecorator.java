@@ -5,8 +5,8 @@ import java.awt.Color;
 public class ToolTipLableNetworkDecorator extends RandomColorNetworkDecorator {
 
 	protected Node toolTipNode;
-	private boolean isPositioningDone = false;
-	private boolean isRandomColoringDone = false;
+	protected boolean isPositioningDone = false;
+	protected boolean isRandomColoringDone = false;
 
 	public ToolTipLableNetworkDecorator(Network network, GraphVisualisationApp graphVisualisationApp,
 			Node toolTipNode) {
@@ -27,7 +27,7 @@ public class ToolTipLableNetworkDecorator extends RandomColorNetworkDecorator {
 		super.draw();
 		if (toolTipNode != null	&& toolTipNode.visible) {
 			drawBackGround(toolTipNode);
-			GraphicsDrawer.drawText(toolTipNode.label, toolTipNode.x, toolTipNode.y, toolTipNode.radius,
+			GraphicsDrawer.drawText(toolTipNode.label, toolTipNode.position.x(), toolTipNode.position.y(), toolTipNode.radius,
 					toolTipNode.color);
 		}
 	}
@@ -36,8 +36,8 @@ public class ToolTipLableNetworkDecorator extends RandomColorNetworkDecorator {
 		GraphicsDrawer.setColor(Color.WHITE);
 		float width = (toolTipNode.label.length() * 12);
 		float height = (toolTipNode.radius) + 12;
-		float y = toolTipNode.y - 6 - toolTipNode.radius / 2;
-		GraphicsDrawer.drawRectangle(toolTipNode.x, y, width, height);
+		float y = toolTipNode.position.y() - 6 - toolTipNode.radius / 2;
+		GraphicsDrawer.drawRectangle(toolTipNode.position.x(), y, width, height);
 	}
 
 	public void setToolTipNode(Node toolTipNode) {
