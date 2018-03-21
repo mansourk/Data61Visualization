@@ -13,6 +13,7 @@ public class Node implements Shape {
 	public float radius;
 	public boolean visible = false;
 	public boolean centered = false;
+	public GLPoint forcePosition = new GLPoint();
 
 	private int index = -1;
 

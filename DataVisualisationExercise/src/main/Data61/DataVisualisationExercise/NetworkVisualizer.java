@@ -23,6 +23,7 @@ public class NetworkVisualizer {
 	private ReentrantLock userActionLock = new ReentrantLock(true);
 	private boolean isToolTipOn = false;
 	private boolean isRotating = false;
+	private boolean isForceDirectedDrawing = false;
 
 	public NetworkVisualizer(GraphVisualisationApp graphVisualisationApp) {
 		this.graphVisualisationApp = graphVisualisationApp;
@@ -39,7 +40,7 @@ public class NetworkVisualizer {
 
 	public void handleToolTip(float mouseX, float mouseY) {
 
-		if (isRotating)
+		if (isRotating || isForceDirectedDrawing)
 			return;
 
 		userActionLock.lock();
@@ -60,7 +61,7 @@ public class NetworkVisualizer {
 
 	public void startRotating() {
 
-		if (isRotating)
+		if (isRotating || isForceDirectedDrawing)
 			return;
 
 		scheduledExecutorService = Executors.newScheduledThreadPool(1);
@@ -78,6 +79,10 @@ public class NetworkVisualizer {
 	}
 
 	public void stopRotating() {
+
+		if (isForceDirectedDrawing)
+			return;
+
 		if (isRotating) {
 			isRotating = false;
 			scheduledExecutorService.shutdown();
@@ -85,9 +90,36 @@ public class NetworkVisualizer {
 		}
 	}
 
+	public void startForceDirectedDrawing() {
+
+		if (isRotating || isForceDirectedDrawing)
+			return;
+
+		scheduledExecutorService = Executors.newScheduledThreadPool(1);
+		isForceDirectedDrawing = true;
+		this.networkDecorator = new RotationNetworkDecorator(Network.getNetworkInstance(), graphVisualisationApp);
+
+		scheduledExecutorService.scheduleAtFixedRate(new Runnable() {
+			@Override
+			public void run() {
+				Network.getNetworkInstance().forceDirect();
+				graphVisualisationApp.redraw();
+			}
+		}, 1, 100, TimeUnit.MILLISECONDS);
+
+	}
+
+	public void stopForceDirectedDrawing() {
+		if (isForceDirectedDrawing) {
+			isForceDirectedDrawing = false;
+			scheduledExecutorService.shutdown();
+			this.networkDecorator = new ToolTipLableNetworkDecorator(graphVisualisationApp, null, true, true);
+		}
+	}
+
 	public void handleCenterGraphOnNode(float mouseX, float mouseY) {
 
-		if (isRotating)
+		if (isRotating || isForceDirectedDrawing)
 			return;
 
 		userActionLock.lock();

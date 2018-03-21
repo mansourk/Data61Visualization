@@ -10,7 +10,7 @@ public class Network {
 
 	private static final Network network = new Network();
 	public static int DEFAULT_RADIUS = 12;
-	
+
 	private ConcurrentHashMap<Integer, Node> nodes = new ConcurrentHashMap<Integer, Node>();
 
 	private Network() {
@@ -114,7 +114,7 @@ public class Network {
 			}
 		}
 		/*
-		 * Check to consider any point within circle 
+		 * Check to consider any point within circle
 		 */
 		if (smallestDistance <= 2 * (DEFAULT_RADIUS * DEFAULT_RADIUS))
 			return nearestNode;
@@ -137,4 +137,79 @@ public class Network {
 		this.nodes.values().stream().forEach(n -> n.position.rotate(pivotPoint, rotationDegree));
 	}
 
+	/* An implementation of Spring Force-directed Algorithm */
+	public void forceDirect() {
+
+		final float R = 0.05f;
+		final float k = 1;
+		final float alpha = R * k * 50 * 50 * 50;
+		final float timeStep = 0.04f;
+
+		for (Node node : network.getNodes().values()) {
+			node.forcePosition = new GLPoint(0, 0);
+		}
+
+		for (Node n1 : network.getNodes().values()) {
+			for (Node n2 : network.getNodes().values()) {
+				if (n1.getIndex() != n2.getIndex()) {
+					float dx = n2.position.x() - n1.position.x();
+					float dy = n2.position.y() - n1.position.y();
+					if (dx == 0 && dy == 0) {
+						dx = (float) Math.random() - 0.5f;
+						dy = (float) Math.random() - 0.5f;
+					}
+					float distanceSquared = dx * dx + dy * dy;
+					float distance = (float) Math.sqrt(distanceSquared);
+					float force = alpha / distanceSquared;
+					dx *= force / distance;
+					dy *= force / distance;
+
+					n1.forcePosition.subtractX(dx);
+					n1.forcePosition.subtractX(dy);
+
+					n2.forcePosition.addX(dx);
+					n2.forcePosition.addX(dy);
+				}
+			}
+		}
+
+		// spring force
+		for (Node n1 : network.getNodes().values()) {
+			for (Edge e : n1.edges) {
+				Node n2 = e.getTo();
+				int n2_index = network.getIndexOfNode(n2);
+				if (n2_index < network.getIndexOfNode(n1))
+					continue;
+				float dx = n2.position.x() - n1.position.x();
+				float dy = n2.position.y() - n1.position.y();
+				float distance = (float) Math.sqrt(dx * dx + dy * dy);
+				if (distance > 0) {
+					float distanceFromRestLength = distance - 50;
+					float force = k * distanceFromRestLength;
+					dx *= force / distance;
+					dy *= force / distance;
+
+					n1.forcePosition.add(new GLPoint(dx, dy));
+					n2.forcePosition.subtract(new GLPoint(dx, dy));
+				}
+			}
+		}
+
+		// update positions
+		for (Node n : network.getNodes().values()) {
+			float dx = timeStep * n.forcePosition.x();
+			float dy = timeStep * n.forcePosition.y();
+			float displacementSquared = dx * dx + dy * dy;
+			final float MAX_DISPLACEMENT = 10;
+			final float MAX_DISPLACEMENT_SQUARED = MAX_DISPLACEMENT * MAX_DISPLACEMENT;
+			if (displacementSquared > MAX_DISPLACEMENT_SQUARED) {
+				float s = MAX_DISPLACEMENT / (float) Math.sqrt(displacementSquared);
+				dx *= s;
+				dy *= s;
+			}
+			n.position.addX(dx);
+			n.position.addX(dy);
+		}
+
+	}
 }
