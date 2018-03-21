@@ -12,3 +12,21 @@ It draws a graph in which nodes represent authors and edges show co-author relat
   - Centring a graph around an individual node.
 
   - Rotating graph about a point.   
+
+# Instruction
+
+  - Copy data files in root folder(beside pom.xml file)
+  
+  - Run GraphVisualisationApp.java 
+
+  - To see tooltip, move mouse over a node. It shows author name, the number of papers, and the number of co-authors
+
+  - To center a graph around a node, click on that node. (A node is selected when tooltip is present)
+
+  - To rotate graph, press Alt-R
+
+  - To stop rotation, press Alt-Shift-R 
+
+# Future work
+
+  - Currently the position of a node is determined randomly. To improve it, force-directed graph drawing algorithms is being implemented to draw graphs in aesthetically pleasing way  
