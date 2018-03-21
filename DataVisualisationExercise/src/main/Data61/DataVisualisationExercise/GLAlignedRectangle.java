@@ -1,5 +1,8 @@
 package Data61.DataVisualisationExercise;
 
+/*
+ * This class defines a rectangle specification in that decorator draws graph on the screen. 
+ */
 public class GLAlignedRectangle {
 
 	public boolean isEmpty = true;

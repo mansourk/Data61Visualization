@@ -14,6 +14,9 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 
+/*
+ * This class does all real drawing and graphical tasks through OpenGL framework.
+ */
 class GraphicsDrawer {
 
 	private static GL2 GL2 = null;
@@ -38,11 +41,25 @@ class GraphicsDrawer {
 		GL2.glViewport(0, 0, w, h);
 	}
 
+	/*
+	 * Map customized coordinate system to a default one. This is done mainly to
+	 * ease the rotation of graph.
+	 */
 	public static void setCoordinateSystemToWorldSpaceUnits() {
 		GL2.glMatrixMode(GLMatrixFunc.GL_PROJECTION);
 		GL2.glLoadIdentity();
 		Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
 		GL2.glOrtho(-dimension.getWidth(), dimension.getWidth(), -dimension.getHeight(), dimension.getHeight(), -1, 1);
+	}
+
+	/*
+	 * Map default coordinate system to a customized one. This is done mainly to
+	 * ease the rotation of graph. For example, if x-axis is from 0 to 100 from
+	 * left to right. it maps to -100 to 100 if y-axis is 0 to 100 from top to
+	 * bottom. It maps to 100 to -100
+	 */
+	public static GLPoint convertUnit2CustomCoordinate(float x, float y, Dimension defaultSize) {
+		return new GLPoint((2 * x) - defaultSize.width, -(2 * y) + defaultSize.height);
 	}
 
 	public static void clear(float r, float g, float b) {
@@ -129,9 +146,5 @@ class GraphicsDrawer {
 		GL2.glVertex2f(x + width, y + height);
 		GL2.glVertex2f(x + width, y);
 		GL2.glEnd();
-	}
-
-	public static GLPoint convertUnit2CustomCoordinate(float x, float y, Dimension defaultSize) {
-		return new GLPoint((2 * x) - defaultSize.width, -(2 * y) + defaultSize.height);
 	}
 }

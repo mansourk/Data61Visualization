@@ -2,16 +2,17 @@ package Data61.DataVisualisationExercise;
 
 import java.awt.Dimension;
 
+/*
+ * The base decorator that draws network graph. It colors all nodes black. 
+ */
 public class DefaultNetworkDecorator implements Shape {
 
 	public static final int widthPercentage = 50;
 	public static final int heightPercentage = 70;
 
-	protected Network network;
 	protected GraphVisualisationApp graphVisualisationApp;
 
-	public DefaultNetworkDecorator(Network network, GraphVisualisationApp graphVisualisationApp) {
-		this.network = network;
+	public DefaultNetworkDecorator(GraphVisualisationApp graphVisualisationApp) {
 		this.graphVisualisationApp = graphVisualisationApp;
 	}
 
@@ -37,14 +38,18 @@ public class DefaultNetworkDecorator implements Shape {
 		return graphVisualisationApp.getPreferredSize();
 	}
 
+	/*
+	 * Assign a random position to each node.
+	 */
 	protected void setPositionsOfNodes() {
 
 		Dimension dimension = getDimension();
-		network.randomizePositionsOfNodes(new GLAlignedRectangle(
-				new GLPoint((float) (-dimension.getWidth() * widthPercentage / 100),
-						(float) (-dimension.getHeight() * heightPercentage / 100)),
-				new GLPoint((float) (dimension.getWidth() * widthPercentage / 100),
-						(float) (dimension.getHeight() * heightPercentage / 100))));
+		Network.getNetworkInstance()
+				.randomizePositionsOfNodes(new GLAlignedRectangle(
+						new GLPoint((float) (-dimension.getWidth() * widthPercentage / 100),
+								(float) (-dimension.getHeight() * heightPercentage / 100)),
+						new GLPoint((float) (dimension.getWidth() * widthPercentage / 100),
+								(float) (dimension.getHeight() * heightPercentage / 100))));
 
 	}
 
@@ -53,7 +58,7 @@ public class DefaultNetworkDecorator implements Shape {
 	}
 
 	protected void drawNodes() {
-		network.getNodes().values().stream().filter(n -> n.isVisible()).forEach(n -> {
+		Network.getNetworkInstance().getNodes().values().stream().filter(n -> n.isVisible()).forEach(n -> {
 			n.radius = defaultNodeRadius();
 			n.draw();
 		});
@@ -64,8 +69,8 @@ public class DefaultNetworkDecorator implements Shape {
 	}
 
 	protected void drawEdges() {
-		for (int i = 0; i < network.getNumNodes(); i++) {
-			Node n = network.getNode(i);
+		for (int i = 0; i < Network.getNetworkInstance().getNumNodes(); i++) {
+			Node n = Network.getNetworkInstance().getNode(i);
 			for (Edge edge : n.edges) {
 				if (edge.getFrom().isVisible() && edge.getTo().isVisible()
 						&& edge.getFrom().getIndex() < edge.getTo().getIndex())

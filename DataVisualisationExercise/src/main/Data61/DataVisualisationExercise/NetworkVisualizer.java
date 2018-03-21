@@ -7,6 +7,9 @@ import java.util.concurrent.locks.ReentrantLock;
 
 import com.jogamp.opengl.GLAutoDrawable;
 
+/*
+ * Manage any visualization task.
+ */
 public class NetworkVisualizer {
 
 	public static int DEFAULT_PERIOD_IN_SECOND = 1;
@@ -15,17 +18,15 @@ public class NetworkVisualizer {
 	public static GLPoint DEFAULT_PIVOT_POINT = new GLPoint(2, 2);
 
 	private GraphVisualisationApp graphVisualisationApp = null;
-	private Network network;
 	private Shape networkDecorator = null;
 	private ReentrantLock drawNetworkLock = new ReentrantLock(true);
 	private ReentrantLock userActionLock = new ReentrantLock(true);
 	private boolean isToolTipOn = false;
 	private boolean isRotating = false;
 
-	public NetworkVisualizer(GraphVisualisationApp graphVisualisationApp, Network network) {
-		this.network = network;
+	public NetworkVisualizer(GraphVisualisationApp graphVisualisationApp) {
 		this.graphVisualisationApp = graphVisualisationApp;
-		this.networkDecorator = new ToolTipLableNetworkDecorator(network, graphVisualisationApp, null);
+		this.networkDecorator = new ToolTipLableNetworkDecorator(graphVisualisationApp, null);
 	}
 
 	public void init(GLAutoDrawable drawable) {
@@ -45,7 +46,7 @@ public class NetworkVisualizer {
 
 		GLPoint input = GraphicsDrawer.convertUnit2CustomCoordinate(mouseX, mouseY,
 				graphVisualisationApp.getPreferredSize());
-		Node node = network.findNearestNode(input.x(), input.y(), -10, -20);
+		Node node = Network.getNetworkInstance().findNearestNode(input.x(), input.y(), -10, -20);
 		if (node != null || isToolTipOn) {
 			((ToolTipLableNetworkDecorator) networkDecorator).setToolTipNode(node);
 			graphVisualisationApp.redraw();
@@ -64,12 +65,12 @@ public class NetworkVisualizer {
 
 		scheduledExecutorService = Executors.newScheduledThreadPool(1);
 		isRotating = true;
-		this.networkDecorator = new RotationNetworkDecorator(network, graphVisualisationApp);
+		this.networkDecorator = new RotationNetworkDecorator(Network.getNetworkInstance(), graphVisualisationApp);
 
 		scheduledExecutorService.scheduleAtFixedRate(new Runnable() {
 			@Override
 			public void run() {
-				network.rotate(DEFAULT_PIVOT_POINT, DEFAULT_ROTATION_DEGREE);
+				Network.getNetworkInstance().rotate(DEFAULT_PIVOT_POINT, DEFAULT_ROTATION_DEGREE);
 				graphVisualisationApp.redraw();
 			}
 		}, 1, DEFAULT_PERIOD_IN_SECOND, TimeUnit.SECONDS);
@@ -80,7 +81,7 @@ public class NetworkVisualizer {
 		if (isRotating) {
 			isRotating = false;
 			scheduledExecutorService.shutdown();
-			this.networkDecorator = new ToolTipLableNetworkDecorator(network, graphVisualisationApp, null, true, true);
+			this.networkDecorator = new ToolTipLableNetworkDecorator(graphVisualisationApp, null, true, true);
 		}
 	}
 
@@ -90,22 +91,21 @@ public class NetworkVisualizer {
 			return;
 
 		userActionLock.lock();
-		
-		network.resetSize();
+
+		Network.getNetworkInstance().resetSize();
 		GLPoint input = GraphicsDrawer.convertUnit2CustomCoordinate(mouseX, mouseY,
 				graphVisualisationApp.getPreferredSize());
-		Node centerNode = network.findNearestNode(input.x(), input.y(), -10, -20);
+		Node centerNode = Network.getNetworkInstance().findNearestNode(input.x(), input.y(), -10, -20);
 
 		if (centerNode != null) {
-			NetworkTraversal.traverse(network, centerNode);
+			NetworkTraversal.traverse(centerNode);
 			centerNode.centered = true;
 		} else {
-			network.visible();
+			Network.getNetworkInstance().visible();
 		}
 
 		ToolTipLableNetworkDecorator decorator = (ToolTipLableNetworkDecorator) networkDecorator;
 		decorator.setToolTipNode(centerNode);
-		decorator.setNetwork(network);
 		graphVisualisationApp.redraw();
 
 		userActionLock.unlock();

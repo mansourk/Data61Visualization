@@ -6,6 +6,9 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
+/*
+ * This class reads paperlinks.csv file and build author objects as well as papers of each author.
+ */
 public class Authors {
 
 	private final static String PAPERAUTOR = "paperlinks.csv";

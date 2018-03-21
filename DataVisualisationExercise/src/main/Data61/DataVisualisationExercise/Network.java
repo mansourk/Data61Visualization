@@ -2,11 +2,24 @@ package Data61.DataVisualisationExercise;
 
 import java.util.concurrent.ConcurrentHashMap;
 
+/*
+ * This class keeps all the information of the network graph. 
+ * Actually, visualizer and decorators use a singleton object of this class
+ */
 public class Network {
 
+	private static final Network network = new Network();
 	public static int DEFAULT_RADIUS = 12;
-
+	
 	private ConcurrentHashMap<Integer, Node> nodes = new ConcurrentHashMap<Integer, Node>();
+
+	private Network() {
+
+	}
+
+	public static Network getNetworkInstance() {
+		return network;
+	}
 
 	public int getNumNodes() {
 		return nodes.size();
@@ -80,10 +93,11 @@ public class Network {
 		}
 	}
 
+	/*
+	 * find Nearest Node to the given point
+	 */
 	public Node findNearestNode(float x, float y, float xOffSet, float yOffSet) {
 
-		// x -= 10;
-		// y = y > 0 ? (y - 15) : (y - 20);
 		x += xOffSet;
 		y += yOffSet;
 
@@ -99,6 +113,9 @@ public class Network {
 				nearestNode = n;
 			}
 		}
+		/*
+		 * Check to consider any point within circle 
+		 */
 		if (smallestDistance <= 2 * (DEFAULT_RADIUS * DEFAULT_RADIUS))
 			return nearestNode;
 		return null;

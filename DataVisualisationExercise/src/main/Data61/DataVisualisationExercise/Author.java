@@ -35,6 +35,9 @@ public class Author {
 		return this.name == null ? false : this.name.equals(author.name);
 	}
 
+	/*
+	 * co-authors for each author is extracted through authors of each paper that this author is in it.
+	 */
 	public Set<Author> getCoAuthors() {
 
 		if (coauthors != null)

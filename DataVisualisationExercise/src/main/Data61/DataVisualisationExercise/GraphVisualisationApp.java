@@ -31,8 +31,8 @@ public class GraphVisualisationApp extends GLCanvas
 
 	private void init() {
 		ApplicationContext context = new ApplicationContext();
-		context.load();
-		visualizer = new NetworkVisualizer(this, context.buildNetwork());
+		context.buildNetwork();
+		visualizer = new NetworkVisualizer(this);
 		addGLEventListener(this);
 		addMouseMotionListener(this);
 		addMouseListener(this);

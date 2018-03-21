@@ -2,21 +2,25 @@ package Data61.DataVisualisationExercise;
 
 import java.awt.Color;
 
+/*
+ * 
+ *  This decorator adds showing tool tip on selected node to the random coloring decorator 
+ */
 public class ToolTipLableNetworkDecorator extends RandomColorNetworkDecorator {
 
 	protected Node toolTipNode;
 	protected boolean isPositioningDone = false;
 	protected boolean isRandomColoringDone = false;
 
-	public ToolTipLableNetworkDecorator(Network network, GraphVisualisationApp graphVisualisationApp,
+	public ToolTipLableNetworkDecorator(GraphVisualisationApp graphVisualisationApp,
 			Node toolTipNode) {
-		super(network, graphVisualisationApp);
+		super(graphVisualisationApp);
 		this.toolTipNode = toolTipNode;
 	}
 
-	public ToolTipLableNetworkDecorator(Network network, GraphVisualisationApp graphVisualisationApp, Node toolTipNode,
+	public ToolTipLableNetworkDecorator(GraphVisualisationApp graphVisualisationApp, Node toolTipNode,
 			boolean isPositioningDone, boolean isRandomColoringDone) {
-		this(network, graphVisualisationApp, toolTipNode);
+		this(graphVisualisationApp, toolTipNode);
 		this.isPositioningDone = isPositioningDone;
 		this.isRandomColoringDone = isRandomColoringDone;
 	}
@@ -43,10 +47,6 @@ public class ToolTipLableNetworkDecorator extends RandomColorNetworkDecorator {
 		this.toolTipNode = toolTipNode;
 	}
 	
-	public void setNetwork(Network network) {
-		this.network = network;
-	}
-
 	protected void assignColorsToAllNodes() {
 		if (!isRandomColoringDone) {
 			super.assignColorsToAllNodes();

@@ -4,16 +4,20 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Queue;
 
+/*
+ *  This class does a breath-first-search to the given level starting centered node as root.
+ *  It is used to find nodes and edges that should be presented when center graph based on a node
+ */
 public class NetworkTraversal {
 
 	public static int DEFAULT_TRAVERSAL_LEVEL = 3;
 
-	public static void traverse(Network network, Node center) {
+	public static void traverse(Node center) {
 
 		Queue<Node> queue = new LinkedList<Node>();
 		HashSet<Node> visited = new HashSet<Node>();
 
-		network.inVisible();
+		Network.getNetworkInstance().inVisible();
 		queue.add(center);
 		queue.add(null);
 		int levelCounter = 0;

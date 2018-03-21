@@ -1,24 +1,29 @@
 package Data61.DataVisualisationExercise;
 
+/*
+ * This class loads papers and authors and builds network. 
+ */
 public class ApplicationContext {
 
 	Authors authors = new Authors(this);
 	Papers papers = new Papers();
 
-	public void load(){
+	private void load() {
 		if (papers.getPapers().isEmpty())
 			papers.load();
 		if (authors.getAuthors().isEmpty())
 			authors.load();
 	}
-	
+
 	public Network buildNetwork() {
 
-		Network network = new Network();
+		load();
+
+		Network network = Network.getNetworkInstance();
 
 		this.authors.getAuthors().values().stream().forEach(author -> {
-			String lable = author.getName() + "|ART:" + author.getPapers().size() 
-					+ "|CA:" + author.getCoAuthors().size();
+			String lable = author.getName() + "|ART:" + author.getPapers().size() + "|CA:"
+					+ author.getCoAuthors().size();
 			network.addNode(new Node(lable, author.getId(), true));
 		});
 
