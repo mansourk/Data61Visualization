@@ -90,13 +90,15 @@ public class NetworkVisualizer {
 			return;
 
 		userActionLock.lock();
-
+		
+		network.resetSize();
 		GLPoint input = GraphicsDrawer.convertUnit2CustomCoordinate(mouseX, mouseY,
 				graphVisualisationApp.getPreferredSize());
 		Node centerNode = network.findNearestNode(input.x(), input.y(), -10, -20);
 
 		if (centerNode != null) {
 			NetworkTraversal.traverse(network, centerNode);
+			centerNode.centered = true;
 		} else {
 			network.visible();
 		}

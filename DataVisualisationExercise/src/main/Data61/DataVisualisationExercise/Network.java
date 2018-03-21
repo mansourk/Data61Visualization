@@ -112,6 +112,10 @@ public class Network {
 		this.getNodes().values().stream().forEach(node -> node.visible = false);
 	}
 
+	public void resetSize() {
+		this.getNodes().values().stream().forEach(node -> node.centered = false);
+	}
+
 	public void rotate(GLPoint pivotPoint, double rotationDegree) {
 		this.nodes.values().stream().forEach(n -> n.position.rotate(pivotPoint, rotationDegree));
 	}

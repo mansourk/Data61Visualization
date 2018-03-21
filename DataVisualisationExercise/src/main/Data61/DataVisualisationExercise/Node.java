@@ -12,6 +12,7 @@ public class Node implements Shape {
 	public Color borderColor = Color.black;
 	public float radius;
 	public boolean visible = false;
+	public boolean centered = false;
 
 	private int index = -1;
 
@@ -45,11 +46,16 @@ public class Node implements Shape {
 		return visible;
 	}
 
+	public boolean isCentered() {
+		return centered;
+	}
+
 	@Override
 	public void draw() {
 		float x = this.position.x();
 		float y = this.position.y();
 		GraphicsDrawer.setColor(color);
+		radius = isCentered() ? radius * 3 : radius;
 		GraphicsDrawer.drawCircle(x, y, radius, true);
 		GraphicsDrawer.setColor(borderColor);
 		GraphicsDrawer.drawCircle(x, y, radius, false);
