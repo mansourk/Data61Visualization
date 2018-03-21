@@ -29,4 +29,4 @@ It draws a graph in which nodes represent authors and edges show co-author relat
 
 # Future work
 
-  - Currently the position of a node is determined randomly. To improve it, force-directed graph drawing algorithms is being implemented to show graphs in an aesthetically pleasing way.  
+  - Currently the position of a node is determined randomly. To improve it, force-directed graph drawing algorithms is being implemented to show graphs in an aesthetically pleasing way.(An initial implementation is available in branch 'develop')  
