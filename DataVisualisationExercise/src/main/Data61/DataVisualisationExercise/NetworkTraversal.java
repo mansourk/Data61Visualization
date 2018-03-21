@@ -10,7 +10,7 @@ import java.util.Queue;
  */
 public class NetworkTraversal {
 
-	public static int DEFAULT_TRAVERSAL_LEVEL = 3;
+	public static int DEFAULT_TRAVERSAL_LEVEL = 2;
 
 	public static void traverse(Node center) {
 
