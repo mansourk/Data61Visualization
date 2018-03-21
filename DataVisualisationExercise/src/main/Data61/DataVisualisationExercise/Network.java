@@ -4,6 +4,8 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class Network {
 
+	private static final int DEFAULT_RADIUS = 12;
+
 	private ConcurrentHashMap<Integer, Node> nodes = new ConcurrentHashMap<Integer, Node>();
 
 	public int getNumNodes() {
@@ -94,7 +96,7 @@ public class Network {
 				nearestNode = n;
 			}
 		}
-		if (smallestDistance <= 12 * 12)
+		if (smallestDistance <= DEFAULT_RADIUS * DEFAULT_RADIUS)
 			return nearestNode;
 		return null;
 	}

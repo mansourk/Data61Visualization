@@ -8,6 +8,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class Authors {
 
+	private final static String PAPERAUTOR = "paperlinks.csv";
+
 	private ApplicationContext context;
 	ConcurrentHashMap<String, Author> authors = new ConcurrentHashMap<String, Author>();
 
@@ -20,7 +22,7 @@ public class Authors {
 	public void load() {
 
 		try {
-			FileReaderIterator iterator = new FileReaderIterator("paperlinks.csv");
+			FileReaderIterator iterator = new FileReaderIterator(PAPERAUTOR);
 			// Not thread safe because two threads might create two authors for
 			// one person which might causes error.
 			ExecutorService executorService = Executors.newFixedThreadPool(1);

@@ -4,6 +4,9 @@ import java.awt.Dimension;
 
 public class DefaultNetworkDecorator implements Shape {
 
+	public static final int widthPercentage = 50;
+	public static final int heightPercentage = 70;
+
 	protected Network network;
 	protected GraphVisualisationApp graphVisualisationApp;
 
@@ -37,10 +40,12 @@ public class DefaultNetworkDecorator implements Shape {
 	protected void setPositionsOfNodes() {
 
 		Dimension dimension = getDimension();
-
 		network.randomizePositionsOfNodes(new GLAlignedRectangle(
-				new GLPoint((float) (-dimension.getWidth() * 50 / 100), (float) (-dimension.getHeight() * 70 / 100)),
-				new GLPoint((float) (dimension.getWidth() * 50 / 100), (float) (dimension.getHeight() * 70 / 100))));
+				new GLPoint((float) (-dimension.getWidth() * widthPercentage / 100),
+						(float) (-dimension.getHeight() * heightPercentage / 100)),
+				new GLPoint((float) (dimension.getWidth() * widthPercentage / 100),
+						(float) (dimension.getHeight() * heightPercentage / 100))));
+
 	}
 
 	protected void edgeLineWidth(float width) {
@@ -67,7 +72,6 @@ public class DefaultNetworkDecorator implements Shape {
 					edge.draw();
 			}
 		}
-
 	}
 
 }

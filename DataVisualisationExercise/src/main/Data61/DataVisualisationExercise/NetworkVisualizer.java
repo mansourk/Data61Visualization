@@ -9,6 +9,11 @@ import com.jogamp.opengl.GLAutoDrawable;
 
 public class NetworkVisualizer {
 
+	public static int DEFAULT_PERIOD_IN_SECOND = 1;
+	public static int DEFAULT_INITIAL_DELAY = 1;
+	public static int DEFAULT_ROTATION_DEGREE = 30;
+	public static GLPoint DEFAULT_PIVOT_POINT = new GLPoint(2, 2);
+
 	private GraphVisualisationApp graphVisualisationApp = null;
 	private Network network;
 	private Shape networkDecorator = null;
@@ -64,10 +69,10 @@ public class NetworkVisualizer {
 		scheduledExecutorService.scheduleAtFixedRate(new Runnable() {
 			@Override
 			public void run() {
-				network.rotate(new GLPoint(2, 2), 45);
+				network.rotate(DEFAULT_PIVOT_POINT, DEFAULT_ROTATION_DEGREE);
 				graphVisualisationApp.redraw();
 			}
-		}, 1, 1, TimeUnit.SECONDS);
+		}, 1, DEFAULT_PERIOD_IN_SECOND, TimeUnit.SECONDS);
 
 	}
 

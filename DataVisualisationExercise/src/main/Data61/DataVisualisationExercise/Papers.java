@@ -7,6 +7,8 @@ import java.util.concurrent.TimeUnit;
 
 public class Papers {
 
+	private final static String PAPERS = "papers.csv";
+
 	ConcurrentHashMap<Integer, Paper> papers = new ConcurrentHashMap<Integer, Paper>();
 
 	public Papers() {
@@ -16,7 +18,7 @@ public class Papers {
 	public void load() {
 
 		try {
-			FileReaderIterator iterator = new FileReaderIterator("papers.csv");
+			FileReaderIterator iterator = new FileReaderIterator(PAPERS);
 			ExecutorService executorService = Executors.newFixedThreadPool(5);
 			while (iterator.hasNext()) {
 				executorService.execute(new PaperBuilder(iterator.next()));
@@ -27,9 +29,10 @@ public class Papers {
 			e.printStackTrace();
 		}
 	}
-	
-	public void addAuthor(int paperId, Author author){
-		
+
+	public void addAuthor(int paperId, Author author) {
+		if (papers.containsKey(paperId))
+			papers.get(paperId).addAuthor(author);
 	}
 
 	public ConcurrentHashMap<Integer, Paper> getPapers() {
