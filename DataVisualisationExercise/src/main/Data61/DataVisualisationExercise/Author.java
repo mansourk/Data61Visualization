@@ -19,7 +19,7 @@ public class Author {
 	}
 
 	public void addPaper(Paper paper) {
-		if (!papers.contains(paper))
+		if (paper != null && !papers.contains(paper))
 			papers.add(paper);
 	}
 
@@ -32,7 +32,7 @@ public class Author {
 	}
 
 	public boolean equals(Author author) {
-		return this.name.equals(author.name);
+		return this.name == null ? false : this.name.equals(author.name);
 	}
 
 	public Set<Author> getCoAuthors() {

@@ -27,6 +27,10 @@ public class Papers {
 			e.printStackTrace();
 		}
 	}
+	
+	public void addAuthor(int paperId, Author author){
+		
+	}
 
 	public ConcurrentHashMap<Integer, Paper> getPapers() {
 		return papers;

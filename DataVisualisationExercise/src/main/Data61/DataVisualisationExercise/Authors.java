@@ -21,7 +21,8 @@ public class Authors {
 
 		try {
 			FileReaderIterator iterator = new FileReaderIterator("paperlinks.csv");
-			// Not thread safe because two threads might create two authors for one person which might causes error.
+			// Not thread safe because two threads might create two authors for
+			// one person which might causes error.
 			ExecutorService executorService = Executors.newFixedThreadPool(1);
 			while (iterator.hasNext()) {
 				executorService.execute(new AuthorBuilder(iterator.next()));
@@ -54,12 +55,14 @@ public class Authors {
 			Author author = authors.get(fields[2]);
 			if (author == null)
 				author = new Author(id.incrementAndGet(), fields[2]);
-			author.addPaper(context.papers.getPapers().get(Integer.parseInt(fields[0])));
-			author.addPaper(context.papers.getPapers().get(Integer.parseInt(fields[1])));
-			authors.put(author.getName(), author);
-			context.papers.getPapers().get(Integer.parseInt(fields[0])).addAuthor(author);
-			context.papers.getPapers().get(Integer.parseInt(fields[1])).addAuthor(author);
+			int paperId1 = Integer.parseInt(fields[0]);
+			int paperId2 = Integer.parseInt(fields[1]);
 
+			author.addPaper(context.papers.getPapers().get(paperId1));
+			author.addPaper(context.papers.getPapers().get(paperId2));
+			authors.put(author.getName(), author);
+			context.papers.addAuthor(paperId1, author);
+			context.papers.addAuthor(paperId2, author);
 		}
 
 	}

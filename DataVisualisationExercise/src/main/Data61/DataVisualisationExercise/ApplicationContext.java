@@ -5,12 +5,14 @@ public class ApplicationContext {
 	Authors authors = new Authors(this);
 	Papers papers = new Papers();
 
-	public Network buildNetwork() {
-
+	public void load(){
 		if (papers.getPapers().isEmpty())
 			papers.load();
 		if (authors.getAuthors().isEmpty())
 			authors.load();
+	}
+	
+	public Network buildNetwork() {
 
 		Network network = new Network();
 
