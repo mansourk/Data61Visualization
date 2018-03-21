@@ -31,6 +31,7 @@ public class GraphVisualisationApp extends GLCanvas
 
 	private void init() {
 		ApplicationContext context = new ApplicationContext();
+		context.load();
 		visualizer = new NetworkVisualizer(this, context.buildNetwork());
 		addGLEventListener(this);
 		addMouseMotionListener(this);
@@ -105,7 +106,8 @@ public class GraphVisualisationApp extends GLCanvas
 
 	@Override
 	public void mouseMoved(MouseEvent event) {
-		visualizer.handleToolTip(event.getX(), event.getY());
+		visualizer.handleToolTip((float) event.getX(),
+				(float) event.getY());
 	}
 
 	@Override

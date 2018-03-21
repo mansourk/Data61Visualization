@@ -46,7 +46,6 @@ public class NetworkVisualizer {
 			graphVisualisationApp.redraw();
 			isToolTipOn = (node != null);
 		}
-
 		userActionLock.unlock();
 
 	}

@@ -39,8 +39,8 @@ public class DefaultNetworkDecorator implements Shape {
 		Dimension dimension = getDimension();
 
 		network.randomizePositionsOfNodes(new GLAlignedRectangle(
-				new GLPoint((float) (-dimension.getWidth() * 50 / 100), (float) (-dimension.getHeight() * 50 / 100)),
-				new GLPoint((float) (dimension.getWidth() * 50 / 100), (float) (dimension.getHeight() * 50 / 100))));
+				new GLPoint((float) (-dimension.getWidth() * 50 / 100), (float) (-dimension.getHeight() * 70 / 100)),
+				new GLPoint((float) (dimension.getWidth() * 50 / 100), (float) (dimension.getHeight() * 70 / 100))));
 	}
 
 	protected void edgeLineWidth(float width) {

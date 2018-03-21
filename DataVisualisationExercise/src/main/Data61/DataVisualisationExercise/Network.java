@@ -80,6 +80,8 @@ public class Network {
 
 	public Node findNearestNode(float x, float y) {
 
+		x -= 10;
+		y = y > 0 ? (y - 15) : (y - 20);
 		Node nearestNode = null;
 		float smallestDistance = 0;
 		for (int i = 0; i < nodes.size(); i++) {
