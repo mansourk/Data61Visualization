@@ -4,7 +4,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class Network {
 
-	private static final int DEFAULT_RADIUS = 12;
+	public static int DEFAULT_RADIUS = 12;
 
 	private ConcurrentHashMap<Integer, Node> nodes = new ConcurrentHashMap<Integer, Node>();
 
@@ -80,10 +80,13 @@ public class Network {
 		}
 	}
 
-	public Node findNearestNode(float x, float y) {
+	public Node findNearestNode(float x, float y, float xOffSet, float yOffSet) {
 
-		x -= 10;
-		y = y > 0 ? (y - 15) : (y - 20);
+		// x -= 10;
+		// y = y > 0 ? (y - 15) : (y - 20);
+		x += xOffSet;
+		y += yOffSet;
+
 		Node nearestNode = null;
 		float smallestDistance = 0;
 		for (int i = 0; i < nodes.size(); i++) {
@@ -96,7 +99,7 @@ public class Network {
 				nearestNode = n;
 			}
 		}
-		if (smallestDistance <= DEFAULT_RADIUS * DEFAULT_RADIUS)
+		if (smallestDistance <= 2 * (DEFAULT_RADIUS * DEFAULT_RADIUS))
 			return nearestNode;
 		return null;
 	}

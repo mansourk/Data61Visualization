@@ -45,7 +45,7 @@ public class NetworkVisualizer {
 
 		GLPoint input = GraphicsDrawer.convertUnit2CustomCoordinate(mouseX, mouseY,
 				graphVisualisationApp.getPreferredSize());
-		Node node = network.findNearestNode(input.x(), input.y());
+		Node node = network.findNearestNode(input.x(), input.y(), -10, -20);
 		if (node != null || isToolTipOn) {
 			((ToolTipLableNetworkDecorator) networkDecorator).setToolTipNode(node);
 			graphVisualisationApp.redraw();
@@ -93,7 +93,7 @@ public class NetworkVisualizer {
 
 		GLPoint input = GraphicsDrawer.convertUnit2CustomCoordinate(mouseX, mouseY,
 				graphVisualisationApp.getPreferredSize());
-		Node centerNode = network.findNearestNode(input.x(), input.y());
+		Node centerNode = network.findNearestNode(input.x(), input.y(), -10, -20);
 
 		if (centerNode != null) {
 			NetworkTraversal.traverse(network, centerNode);
