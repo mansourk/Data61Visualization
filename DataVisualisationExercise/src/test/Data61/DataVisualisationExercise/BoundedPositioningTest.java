@@ -7,7 +7,7 @@ import junit.framework.Assert;
 
 public class BoundedPositioningTest {
 
-	Network network = new Network();
+	Network network = Network.getNetworkInstance();
 
 	@Before
 	public void setUp() {

@@ -7,11 +7,13 @@ import junit.framework.Assert;
 
 public class RotationTest {
 
-	Network network = new Network();
+	Network network = Network.getNetworkInstance();
 
 	@Before
 	public void setUP() {
 
+		Network.getNetworkInstance().getNodes().clear();
+		
 		Node node1 = new Node("lable0", 0);
 		node1.position.setX(5);
 		node1.position.setY(10);

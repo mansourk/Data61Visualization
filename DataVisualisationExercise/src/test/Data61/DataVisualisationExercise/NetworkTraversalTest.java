@@ -7,11 +7,13 @@ import junit.framework.Assert;
 
 public class NetworkTraversalTest {
 
-	Network network = new Network();
+	Network network = Network.getNetworkInstance();
 
 	@Before
 	public void setUP() {
 
+		Network.getNetworkInstance().getNodes().clear();
+		
 		Node node1 = new Node("lable0", 0);
 		node1.position.setX(5);
 		node1.position.setY(10);
@@ -58,7 +60,7 @@ public class NetworkTraversalTest {
 	public void shouldTraverseAllNodesForLevel3StartFromNode0() {
 
 		NetworkTraversal.DEFAULT_TRAVERSAL_LEVEL = 3;
-		NetworkTraversal.traverse(network, network.getNode(0));
+		NetworkTraversal.traverse(network.getNode(0));
 
 		for (Node node : network.getNodes().values()) {
 			Assert.assertTrue(node.isVisible());
@@ -69,7 +71,7 @@ public class NetworkTraversalTest {
 	public void shouldTraverseSomeofNodesForLevel2StartFromNode0() {
 
 		NetworkTraversal.DEFAULT_TRAVERSAL_LEVEL = 2;
-		NetworkTraversal.traverse(network, network.getNode(0));
+		NetworkTraversal.traverse(network.getNode(0));
 
 		for (Node node : network.getNodes().values()) {
 			if (node.label.equals("lable3")) {
