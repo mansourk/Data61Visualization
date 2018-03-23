@@ -97,7 +97,7 @@ public class NetworkVisualizer {
 				graphVisualisationApp.getPreferredSize());
 		Node centerNode = Network.getNetworkInstance().findNearestNode(input.x(), input.y(), -10, -20);
 
-		if (centerNode != null) {
+		if (centerNode != null && centerNode.isVisible()) {
 			NetworkTraversal.traverse(centerNode);
 			centerNode.centered = true;
 		} else {
