@@ -13,6 +13,7 @@ public class Node implements Shape {
 	public float radius;
 	public boolean visible = false;
 	public boolean centered = false;
+	public GLPoint force = new GLPoint();
 
 	private int index = -1;
 
@@ -59,7 +60,23 @@ public class Node implements Shape {
 		GraphicsDrawer.drawCircle(x, y, radius, true);
 		GraphicsDrawer.setColor(borderColor);
 		GraphicsDrawer.drawCircle(x, y, radius, false);
+	}
 
+	public void weakenForceBy(int maxAllowedDisplacement) {
+		float displacementSquared = (float) (Math.pow(force.x(), 2) + Math.pow(force.y(), 2));
+		if (displacementSquared > maxAllowedDisplacement) {
+			float s = maxAllowedDisplacement / (float) Math.sqrt(displacementSquared);
+			force.setX(force.x() * s);
+			force.setY(force.y() * s);
+
+		}
+	}
+
+	public void applyForce() {
+		position.addX(force.x());
+		position.addY(force.y());
+		force.setX(0);
+		force.setY(0);
 	}
 
 }

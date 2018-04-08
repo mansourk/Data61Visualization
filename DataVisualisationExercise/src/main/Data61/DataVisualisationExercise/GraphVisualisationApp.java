@@ -106,8 +106,7 @@ public class GraphVisualisationApp extends GLCanvas
 
 	@Override
 	public void mouseMoved(MouseEvent event) {
-		visualizer.handleToolTip((float) event.getX(),
-				(float) event.getY());
+		visualizer.handleToolTip((float) event.getX(), (float) event.getY());
 	}
 
 	@Override
@@ -149,6 +148,10 @@ public class GraphVisualisationApp extends GLCanvas
 			visualizer.stopRotating();
 		} else if (isAltPressed && (e.getKeyChar() == 'r' || e.getKeyChar() == 'R')) {
 			visualizer.startRotating();
+		} else if (isAltPressed && isShiftPressed && (e.getKeyChar() == 'f' || e.getKeyChar() == 'F')) {
+			visualizer.stopRunningForceDirectedLayout();
+		} else if (isAltPressed && (e.getKeyChar() == 'f' || e.getKeyChar() == 'F')) {
+			visualizer.startRunningForceDirectedLayout();
 		}
 	}
 

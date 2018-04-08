@@ -23,6 +23,7 @@ public class NetworkVisualizer {
 	private ReentrantLock userActionLock = new ReentrantLock(true);
 	private boolean isToolTipOn = false;
 	private boolean isRotating = false;
+	private boolean isRunningLayout = false;
 
 	public NetworkVisualizer(GraphVisualisationApp graphVisualisationApp) {
 		this.graphVisualisationApp = graphVisualisationApp;
@@ -60,7 +61,7 @@ public class NetworkVisualizer {
 
 	public void startRotating() {
 
-		if (isRotating)
+		if (isRotating || isRunningLayout)
 			return;
 
 		scheduledExecutorService = Executors.newScheduledThreadPool(1);
@@ -80,6 +81,33 @@ public class NetworkVisualizer {
 	public void stopRotating() {
 		if (isRotating) {
 			isRotating = false;
+			scheduledExecutorService.shutdown();
+			this.networkDecorator = new ToolTipLableNetworkDecorator(graphVisualisationApp, null, true, true);
+		}
+	}
+
+	public void startRunningForceDirectedLayout() {
+
+		if (isRotating || isRunningLayout)
+			return;
+
+		scheduledExecutorService = Executors.newScheduledThreadPool(1);
+		isRunningLayout = true;
+		this.networkDecorator = new RotationNetworkDecorator(Network.getNetworkInstance(), graphVisualisationApp);
+
+		scheduledExecutorService.scheduleAtFixedRate(new Runnable() {
+			@Override
+			public void run() {
+				Network.getNetworkInstance().runForceDirectedLayout();
+				graphVisualisationApp.redraw();
+			}
+		}, 1, 100, TimeUnit.MILLISECONDS);
+
+	}
+
+	public void stopRunningForceDirectedLayout() {
+		if (isRunningLayout) {
+			isRunningLayout = false;
 			scheduledExecutorService.shutdown();
 			this.networkDecorator = new ToolTipLableNetworkDecorator(graphVisualisationApp, null, true, true);
 		}

@@ -1,5 +1,6 @@
 package Data61.DataVisualisationExercise;
 
+import java.util.Iterator;
 import java.util.concurrent.ConcurrentHashMap;
 
 /*
@@ -10,7 +11,7 @@ public class Network {
 
 	private static final Network network = new Network();
 	public static int DEFAULT_RADIUS = 12;
-	
+
 	private ConcurrentHashMap<Integer, Node> nodes = new ConcurrentHashMap<Integer, Node>();
 
 	private Network() {
@@ -114,7 +115,7 @@ public class Network {
 			}
 		}
 		/*
-		 * Check to consider any point within circle 
+		 * Check to consider any point within circle
 		 */
 		if (smallestDistance <= 2 * (DEFAULT_RADIUS * DEFAULT_RADIUS))
 			return nearestNode;
@@ -137,4 +138,73 @@ public class Network {
 		this.nodes.values().stream().forEach(n -> n.position.rotate(pivotPoint, rotationDegree));
 	}
 
+	public void runForceDirectedLayout() {
+		calculateRepulsiveForces();
+		calculateAttractiveForces();
+		updateNodesPositions();
+	}
+
+	private void calculateAttractiveForces() {
+		for (int i = 0; i < nodes.size(); ++i) {
+			Node n1 = nodes.get(i);
+			Iterator<Edge> iterator = n1.edges.iterator();
+			while (iterator.hasNext()) {
+				Node n2 = iterator.next().getTo();
+				int n2_index = network.getIndexOfNode(n2);
+				if (n2_index < i)
+					continue;
+				float dx = n2.position.x() - n1.position.x();
+				float dy = n2.position.y() - n1.position.y();
+				float distance = (float) Math.sqrt(dx * dx + dy * dy);
+				if (distance > 0) {
+					float force = 0.2f * distance;
+					dx *= force / distance;
+					dy *= force / distance;
+
+					n1.force.addX(dx);
+					n1.force.addY(dy);
+
+					n2.force.subtractX(dx);
+					n2.force.subtractY(dy);
+				}
+			}
+		}
+	}
+
+	private void calculateRepulsiveForces() {
+		for (int i = 0; i < nodes.size(); ++i) {
+			Node n1 = nodes.get(i);
+			for (int j = i + 1; j < nodes.size(); ++j) {
+				Node n2 = nodes.get(j);
+				float dx = n2.position.x() - n1.position.x();
+				float dy = n2.position.y() - n1.position.y();
+				if (dx == 0 && dy == 0) {
+					dx = (float) Math.random() - 0.5f;
+					dy = (float) Math.random() - 0.5f;
+				}
+				float distanceSquared = dx * dx + dy * dy;
+				float distance = (float) Math.sqrt(distanceSquared);
+				float force = 20000f / distanceSquared;
+				dx *= force / distance;
+				dy *= force / distance;
+
+				n1.force.subtractX(dx);
+				n1.force.subtractY(dy);
+
+				n2.force.addX(dx);
+				n2.force.addY(dy);
+			}
+		}
+	}
+
+	final int MAX_ALLOWED_DISPLACEMENT = 10;
+
+	private void updateNodesPositions() {
+
+		for (int i = 0; i < nodes.size(); ++i) {
+			Node n = nodes.get(i);
+			n.weakenForceBy(MAX_ALLOWED_DISPLACEMENT);
+			n.applyForce();
+		}
+	}
 }
